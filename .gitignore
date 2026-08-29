@@ -1,0 +1,29 @@
+# Environment and credentials
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node (if using npx for mcp-atlassian)
+node_modules/
+
+# Python (if using uvx for mcp-atlassian)
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Client-specific local state (not part of the portable plugin)
+.kiro/
+.cursor/
+.github/copilot/

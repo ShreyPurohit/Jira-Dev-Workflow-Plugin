@@ -1,0 +1,25 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
+    "mcp-atlassian": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["mcp-atlassian==0.23.1"],
+      "env": {
+        "JIRA_URL": "${JIRA_URL}",
+        "JIRA_USERNAME": "${JIRA_USERNAME}",
+        "JIRA_API_TOKEN": "${JIRA_API_TOKEN}"
+      }
+    },
+    "mcp-atlassian-attachments": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["mcp-atlassian-attachments==0.2.0"],
+      "env": {
+        "ATLASSIAN_SITE_URL": "${JIRA_URL}",
+        "ATLASSIAN_EMAIL": "${JIRA_USERNAME}",
+        "ATLASSIAN_API_TOKEN": "${JIRA_API_TOKEN}"
+      }
+    }
+  }
+}
