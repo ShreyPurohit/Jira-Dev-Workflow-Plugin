@@ -189,7 +189,7 @@ This plugin provides two MCP servers:
 | Server                      | Package                            | Tools         | Purpose              |
 | --------------------------- | ---------------------------------- | ------------- | -------------------- |
 | `mcp-atlassian`             | `mcp-atlassian==0.23.1`            | 63 Jira tools | Full Jira API access |
-| `mcp-atlassian-attachments` | `mcp-atlassian-attachments==0.2.0` | 1 tool        | Download attachments |
+| `mcp-atlassian-attachments` | `mcp-atlassian-attachments==0.3.0` | 1 tool        | Download attachments |
 
 Both require [uv](https://github.com/astral-sh/uv) installed (`uvx` command available).
 
