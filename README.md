@@ -23,7 +23,7 @@ Built on the open [Agent Plugins](https://agent-plugins.org/) specification — 
 **From GitHub (any compatible client):**
 
 ```
-https://github.com/ShreyPurohit/jira-dev-workflow
+https://github.com/ShreyPurohit/Jira-Dev-Workflow-Plugin
 ```
 
 Point your client's "Add Plugin" / "Import from GitHub" flow at this URL.
@@ -31,7 +31,7 @@ Point your client's "Add Plugin" / "Import from GitHub" flow at this URL.
 **Or clone locally:**
 
 ```bash
-git clone https://github.com/ShreyPurohit/jira-dev-workflow.git
+git clone https://github.com/ShreyPurohit/Jira-Dev-Workflow-Plugin.git
 ```
 
 Then import the local directory in your client.
