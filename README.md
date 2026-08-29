@@ -259,21 +259,29 @@ The repository is currently on version 1.1.0 as defined in [plugin.json](plugin.
 - Git-to-Jira linking work
 - sprint visibility and blocker reporting
 
-There is no dedicated CHANGELOG file in this repository at the moment, so the README is the main source of release-facing documentation.
+Release notes for each version are documented in [CHANGELOG.md](./CHANGELOG.md).
+
+## Support
+
+For issues, questions, or feature requests, please open an issue on GitHub:
+
+https://github.com/ShreyPurohit/Jira-Dev-Workflow-Plugin/issues
+
+## Privacy
+
+This Plugin is open-source and does not operate a hosted backend. For details on how it handles information, see [PRIVACY.md](./PRIVACY.md).
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feat/your-feature`
-3. Make your changes
-4. Test with your Jira instance
-5. Submit a pull request
+We welcome contributions! For guidelines on development setup, testing, and submitting changes, see [CONTRIBUTING.md](./CONTRIBUTING.md).
 
-### Adding a new skill
+Key points:
 
-1. Create `skills/your-skill/SKILL.md` with YAML frontmatter (`name` + `description`)
-2. Document triggers, steps, rules, and error handling
-3. Test with natural-language prompts across multiple clients
+- Install `uv` for MCP server support
+- Configure your Jira environment variables
+- Test in your Agent Plugin client
+- Follow the skill design principles (single responsibility, no overlap, safety first)
+- Update documentation and CHANGELOG.md for release-relevant changes
 
 ## Standards
 
