@@ -257,7 +257,7 @@ The repository is currently on version 1.1.0 as defined in [plugin.json](plugin.
 
 - Jira-aware branch creation
 - Git-to-Jira linking work
-- sprint visibility and blocker reporting
+- Sprint visibility and blocker reporting
 
 Release notes for each version are documented in [CHANGELOG.md](./CHANGELOG.md).
 
@@ -265,11 +265,17 @@ Release notes for each version are documented in [CHANGELOG.md](./CHANGELOG.md).
 
 For issues, questions, or feature requests, please open an issue on GitHub:
 
-https://github.com/ShreyPurohit/Jira-Dev-Workflow-Plugin/issues
+[GitHub Issues](https://github.com/ShreyPurohit/Jira-Dev-Workflow-Plugin/issues)
 
 ## Privacy
 
-This Plugin is open-source and does not operate a hosted backend. For details on how it handles information, see [PRIVACY.md](./PRIVACY.md).
+This plugin is open-source and does not operate a hosted backend. For details on how it handles information, see [PRIVACY.md](./PRIVACY.md).
+
+## Security
+
+If you discover a security vulnerability, please do **not** disclose it publicly through GitHub Issues. Follow the responsible disclosure process described in [SECURITY.md](./SECURITY.md).
+
+Never include Jira API tokens, credentials, or other sensitive information in public issues or reports.
 
 ## Contributing
 
@@ -286,7 +292,7 @@ Key points:
 ## Standards
 
 - [Agent Plugins 1.0.0](https://agent-plugins.org/specification) — plugin manifest and discovery
-- [Agent Skills](https://agentskills.io/specification) — skill format (SKILL.md)
+- [Agent Skills](https://agentskills.io/specification) — skill format (`SKILL.md`)
 - [Model Context Protocol](https://modelcontextprotocol.io/specification) — MCP server configuration
 
 ## License

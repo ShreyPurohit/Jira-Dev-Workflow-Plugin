@@ -241,6 +241,6 @@ By contributing to this repository, you agree that your contributions are made u
 
 - **Bug reports or feature requests:** Open an issue on GitHub: https://github.com/ShreyPurohit/Jira-Dev-Workflow-Plugin/issues
 - **Questions about contributing:** Start a discussion or ask in an issue
-- **Security concerns:** See [PRIVACY.md](./PRIVACY.md) for contact information
+- **Security concerns:** See [SECURITY.md](./SECURITY.md) for contact information
 
 Thank you for contributing!
