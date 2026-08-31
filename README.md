@@ -189,7 +189,7 @@ This plugin provides one MCP server:
 | --------------------------- | ---------------------------------- | ------------- | -------------------- |
 | `mcp-atlassian`             | `mcp-atlassian==0.23.1`            | 63 Jira tools | Full Jira API access |
 
-Both require [uv](https://github.com/astral-sh/uv) installed (`uvx` command available).
+The MCP server requires [uv] installed (uvx command available).
 
 ```bash
 # Install uv (provides uvx)
