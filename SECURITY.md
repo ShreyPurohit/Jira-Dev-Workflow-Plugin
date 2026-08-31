@@ -55,7 +55,6 @@ A clear and detailed vulnerability report should include:
 This Plugin depends on:
 
 - `mcp-atlassian` (version 0.23.1) — Jira MCP server
-- `mcp-atlassian-attachments` (version 0.3.0) — attachment MCP server
 
 These are third-party implementations. Review their documentation and security practices. Keep your MCP installations up to date.
 

@@ -76,7 +76,6 @@ Your use of this Plugin involves interaction with third-party services. You are 
 The Plugin uses two MCP implementations:
 
 - `mcp-atlassian` (version 0.23.1) — provides access to Jira APIs
-- `mcp-atlassian-attachments` (version 0.3.0) — provides Jira attachment downloading
 
 These are third-party tools. They are not official Atlassian products. Review their documentation and licenses for additional details.
 

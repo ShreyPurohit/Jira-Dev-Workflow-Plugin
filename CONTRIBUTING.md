@@ -81,7 +81,6 @@ Try natural-language prompts in your Agent Plugin client to verify the Plugin wo
 - **`plugin.json`:** Defines the plugin identity, version, and metadata according to the [Agent Plugins 1.0.0 specification](https://agent-plugins.org/specification).
 - **`mcp.json`:** Configures MCP servers. The Plugin uses two:
   - `mcp-atlassian` for standard Jira API access
-  - `mcp-atlassian-attachments` for downloading Jira attachments
 - **`skills/*/SKILL.md`:** Each skill is a Markdown file with YAML frontmatter defining its name and description, followed by natural-language instructions for the AI agent.
 
 ## Adding or Modifying a Skill
