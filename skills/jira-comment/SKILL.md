@@ -50,7 +50,6 @@ compose.
 ```markdown
 ## Development Progress
 
-**Branch:** feat/PROJ-123-description
 **Status:** In Progress
 
 ### Completed
@@ -71,7 +70,6 @@ compose.
 ```markdown
 ## Implementation Complete
 
-**Branch:** feat/PROJ-123-description
 **Files changed:** [count]
 
 ### Changes
@@ -94,7 +92,6 @@ compose.
 
 **Root cause:** [brief explanation]
 **Fix:** [what was changed]
-**Branch:** fix/PROJ-123-description
 
 ### Verification
 
@@ -107,7 +104,7 @@ compose.
 - **Use markdown formatting.** Jira Cloud renders markdown in comments.
 - **Keep comments concise and actionable.** Don't dump entire file diffs — summarize what changed and why.
 - **Don't add comments for trivial status updates** that the transition itself communicates. If the user just transitioned to "In Progress", a comment saying "Started work" adds no value.
-- **Include the branch name** when documenting development work — it links the comment to the code.
+- **Do not inspect Git state or require Git context** for a generic comment. A branch, commit, or PR may be included only when the user explicitly provides it or explicitly asks for Git/development context. For Git-derived comments, use `jira-link-work`.
 - **Never include secrets, tokens, or sensitive paths** in comments.
 
 ## Error handling
@@ -127,7 +124,6 @@ Response:
    ```
    ## Development Progress
 
-   **Branch:** feat/PROJ-123-login-redesign
    **Status:** Implementation complete
 
    ### Completed

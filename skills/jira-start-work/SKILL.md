@@ -34,12 +34,14 @@ Progress) — a narrowed case of the general `jira-update-status`.
 
 ### Step 2: Transition to In Progress
 
-1. Call `jira_get_transitions` to discover available transitions.
-2. Find the transition whose **destination status** (`to.name`) matches "In Progress" (or the user's target status).
-   - **CRITICAL**: Match by `transition.to.name` (destination), NOT by `transition.name` (the transition label). Transition names are arbitrary workflow labels that rarely match the destination status.
-3. Confirm with the user: "I'll transition PROJ-123 from [current] to In Progress. Proceed?"
-4. On confirmation, call `jira_transition_issue` with the transition ID.
-5. Verify the transition succeeded by re-reading the issue.
+Use the transition discovery, destination matching, confirmation, execution, and
+verification procedure defined by `jira-update-status`.
+
+- The target is the workflow's **In Progress equivalent**.
+- Match the destination using `transition.to.name`, never the transition label
+  in `transition.name`.
+- Always confirm before changing Jira state.
+- Verify the resulting status afterward.
 
 ### Step 3: Summarize
 
@@ -51,7 +53,6 @@ Report:
 ## Important rules
 
 - **Always confirm before transitioning.** Never silently change ticket status.
-- **Match transitions by destination status** (`to.name`), not by transition name.
 - **If no valid transition exists**, report it clearly: "PROJ-123 is currently in [status] and has no available transition to In Progress. Available transitions: [list destinations]."
 - **Do not assign the ticket** unless the user explicitly asks.
 - **Do not add comments** during start-work — that's a separate action.
@@ -71,7 +72,5 @@ User: "Start work on PROJ-456"
 Response:
 
 1. Fetch PROJ-456 → Status: "To Do"
-2. Get transitions → Find transition with `to.name = "In Progress"`
-3. Confirm: "I'll move PROJ-456 from To Do → In Progress. Proceed?"
-4. On yes: Execute transition, verify
-5. Report the resulting status without creating or suggesting a branch
+2. Apply the `jira-update-status` transition procedure for the workflow's In Progress equivalent
+3. Report the resulting status without creating or suggesting a branch
