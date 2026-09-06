@@ -1,11 +1,13 @@
 ---
 name: jira-update-status
-description: Transition Jira issues between statuses using dynamic discovery
+description: Transition a Jira issue to an arbitrary status via dynamic discovery. Use for general status changes EXCEPT the two specialized cases — starting work (To Do → In Progress, use jira-start-work) and final completion (comment + done, use jira-complete).
 ---
 
 # Jira Update Status
 
 Transition a Jira issue between statuses safely using dynamic transition discovery.
+This is the **general-purpose** transition skill for any status change that is not
+one of the two specialized flows.
 
 ## When to use
 
@@ -13,7 +15,14 @@ Transition a Jira issue between statuses safely using dynamic transition discove
 - User says "transition PROJ-123 to [status]"
 - User says "mark PROJ-123 as [status]"
 - User says "update the status of PROJ-123"
-- User says "close PROJ-123" or "reopen PROJ-123"
+- User says "reopen PROJ-123" or "move PROJ-123 back to [status]"
+
+## When NOT to use
+
+- **Moving To Do → In Progress to begin work** → use `jira-start-work`.
+- **Final completion** (adds a completion comment + transitions to done/sign-off)
+  → use `jira-complete`.
+- **Only posting a comment, no status change** → use `jira-comment`.
 
 ## How to respond
 

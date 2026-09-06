@@ -1,21 +1,29 @@
 ---
 name: jira-link-work
-description: Link git commits, branches, or pull requests to Jira issues via structured comments
+description: Link git branches, commits, or pull requests to a Jira issue by posting a comment built FROM git data (traceability between code and ticket). Use only when the content comes from git — for free-text prose comments use jira-comment.
 ---
 
 # Jira Link Work
 
-Link development artifacts (commits, branches, PRs) to Jira issues by posting structured comments that create traceability between code and tickets.
+Link development artifacts (commits, branches, PRs) to Jira issues by posting a
+structured comment **built from git data**, creating traceability between code and
+tickets. The defining trait of this skill: the comment content is derived from git
+(branch name, commit hashes, diff stats, PR URL), not dictated as prose.
 
 ## When to use
 
 - User says "link my commit to PROJ-123"
-- User says "post my progress on PROJ-456"
 - User says "link this PR to PROJ-789"
-- User says "update PROJ-123 with my branch"
-- User says "log what I've done on PROJ-101"
-- User says "connect my work to the ticket"
-- After completing a feature, to record what was done
+- User says "link my branch to PROJ-123"
+- User says "connect my git work to the ticket"
+- User provides a commit hash or PR URL to attach to an issue
+
+## When NOT to use
+
+- **Posting a free-text note or dictated prose** → use `jira-comment`
+  (this skill only posts comments derived from git artifacts).
+- **Completing the ticket** (comment + transition to done) → use `jira-complete`.
+- **Creating the branch itself** → use `jira-branch`.
 
 ## How to respond
 
@@ -103,6 +111,7 @@ Extract the Jira issue key from the user's request. If not explicitly mentioned,
 ### Step 2: Gather git information
 
 Use git commands to collect relevant data:
+
 - `git branch --show-current` — current branch
 - `git log --oneline <base>..HEAD` — commits on this branch
 - `git diff --stat <base>..HEAD` — files changed summary
@@ -111,6 +120,7 @@ Use git commands to collect relevant data:
 ### Step 3: Format the comment
 
 Build the comment using the formats above. Always include:
+
 - A clear emoji header (🔗 or 📋)
 - Branch name
 - Commit hashes (shortened) with messages

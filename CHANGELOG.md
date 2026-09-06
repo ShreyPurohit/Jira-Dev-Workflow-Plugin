@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.1] - 2026-09-06
+
+### Added
+- Added responsible security vulnerability reporting guidance in `SECURITY.md`.
+- Added privacy, contribution, and security documentation links to the README.
+
+### Changed
+- Clarified that Jira start-work transitions and Git branch creation are separate operations.
+- Removed stale references to unavailable skills and corrected the README's MCP server documentation.
+
 ## [1.1.0] - 2026-08-29
 
 ### Added

@@ -1,11 +1,13 @@
 ---
 name: jira-start-work
-description: Move a Jira issue into an in-progress state safely and verify the result
+description: Begin work on a Jira issue by transitioning it to In Progress. Use only for starting work; for any other status change use jira-update-status, and use jira-branch separately to create a Git branch.
 ---
 
 # Jira Start Work
 
-Begin development on a Jira issue by moving it to the appropriate in-progress state.
+Begin development on a Jira issue by moving it to the appropriate In Progress state.
+This is the **specialized** transition for starting work (fixed destination: In
+Progress) — a narrowed case of the general `jira-update-status`.
 
 ## When to use
 
@@ -13,7 +15,12 @@ Begin development on a Jira issue by moving it to the appropriate in-progress st
 - User says "begin PROJ-123"
 - User says "pick up PROJ-123"
 - User says "I'm starting PROJ-123"
-- User wants to transition a ticket to In Progress
+
+## When NOT to use
+
+- **Transitioning to any status other than In Progress** → use `jira-update-status`.
+- **Creating the Git branch** → use `jira-branch` separately.
+- **Final completion** → use `jira-complete`.
 
 ## How to respond
 

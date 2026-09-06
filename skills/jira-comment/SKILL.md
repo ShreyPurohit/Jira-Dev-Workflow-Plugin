@@ -1,19 +1,29 @@
 ---
 name: jira-comment
-description: Add structured progress or completion comments to Jira issues
+description: Post a free-text progress, note, or completion comment on a Jira issue. Use for prose updates the user dictates or asks you to compose — NOT for linking git branches/commits/PRs (use jira-link-work) and NOT for status changes (use jira-update-status).
 ---
 
 # Jira Comment
 
-Add structured progress or completion comments to Jira issues.
+Post a **free-text** comment (progress note, clarification, or completion summary)
+on a Jira issue. This skill owns prose comments the user dictates or asks you to
+compose.
 
 ## When to use
 
 - User says "add a comment to PROJ-123"
-- User says "update PROJ-123 with progress"
+- User says "comment on PROJ-123 that ..."
 - User says "post implementation notes to PROJ-123"
-- User says "document what was done on PROJ-123"
-- User wants to record development progress on a ticket
+- User says "leave a note on PROJ-123"
+- User dictates comment text they want posted verbatim
+
+## When NOT to use
+
+- **Linking a git branch, commit, or PR to the issue** → use `jira-link-work`
+  (it builds the comment _from git data_; this skill is for free-text prose).
+- **Changing the issue's status** → use `jira-update-status` (or `jira-complete`
+  for a wrap-up comment + transition together).
+- **Reading or summarizing existing comments** → use `jira-read`.
 
 ## How to respond
 

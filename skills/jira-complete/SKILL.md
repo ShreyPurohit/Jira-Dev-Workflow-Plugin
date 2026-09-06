@@ -1,20 +1,29 @@
 ---
 name: jira-complete
-description: Complete a development workflow with comment and status transition
+description: Wrap up a finished Jira issue — post a completion comment AND transition it to the done/sign-off status in one flow. Use only for final completion; for a bare status change use jira-update-status.
 ---
 
 # Jira Complete
 
-Complete a development workflow on a Jira issue: verify work is done, optionally add a completion comment, and transition to the completion status.
+Complete a development workflow on a Jira issue: verify work is done, add a
+completion comment, and transition to the done/sign-off status — the two actions
+together, as one wrap-up flow.
 
 ## When to use
 
 - User says "complete PROJ-123"
-- User says "mark PROJ-123 as done"
-- User says "finish PROJ-123"
-- User says "close out PROJ-123"
+- User says "finish PROJ-123 and mark it done"
+- User says "wrap up PROJ-123"
+- User says "PROJ-123 is done — close it out with a summary"
 - User says "PROJ-123 is ready for sign off"
-- Development is done and the user wants to wrap up the Jira workflow
+
+## When NOT to use
+
+- **Just changing the status, no completion comment** → use `jira-update-status`
+  (this skill always pairs a comment with the transition).
+- **Preparing a PR description / moving to review** (not final done) → use the
+  appropriate review workflow outside this completion skill.
+- **Posting a comment without transitioning** → use `jira-comment`.
 
 ## How to respond
 
