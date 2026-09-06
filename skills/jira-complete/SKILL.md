@@ -9,6 +9,16 @@ Complete a development workflow on a Jira issue: verify work is done, add a
 completion comment, and transition to the done/sign-off status — the two actions
 together, as one wrap-up flow.
 
+## Responsibility
+
+This skill owns completion intent and coordinates the completion workflow. It
+uses `jira-update-status` for generic transition discovery, destination matching,
+confirmation, execution, and verification. It uses `jira-comment` for generic
+comment creation and confirmation rules when a completion comment is needed.
+
+It does not own generic status-transition mechanics or generic Jira comment
+creation, and it does not create branches or link Git work to Jira.
+
 ## When to use
 
 - User says "complete PROJ-123"
@@ -62,15 +72,15 @@ If the user has provided context about what was done, offer to add a completion 
 - [x] AC-2: [met]
 ```
 
-### Step 4: Execute the transition
+### Step 4: Coordinate execution
 
-1. Call `jira_get_transitions` to discover available transitions.
-2. Match by **destination status** (`to.name`), not by transition name.
-3. Confirm: "I'll transition PROJ-123 from [current] to [destination] and add a completion comment. Proceed?"
-4. On confirmation:
-   - Add the comment (if applicable)
-   - Execute the transition
-   - Verify success
+1. If a completion comment is needed, pass it through `jira-comment`'s comment
+   creation and confirmation rules.
+2. Pass the requested destination to `jira-update-status`, which owns transition
+   discovery, matching by `to.name`, confirmation, execution, and verification.
+3. Coordinate the two operations and report whether the comment and transition
+   each succeeded. If the comment fails but the transition succeeds, report
+   partial success and offer to retry the comment.
 
 ### Step 5: Report
 
@@ -83,10 +93,8 @@ If the user has provided context about what was done, offer to add a completion 
 
 ## Important rules
 
-- **Always confirm before transitioning and commenting.** This is a combined write operation.
-- **Match transitions by destination** (`to.name`), never by transition name.
+- **Coordinate the lower-level skills.** Use `jira-update-status` for transition mechanics and `jira-comment` for comment mechanics.
 - **Don't auto-complete without user intent.** Never transition a ticket just because code was committed — the user decides when a ticket is done.
-- **Verify the transition succeeded.** Re-read the issue to confirm.
 - **If QA is part of the workflow**, clarify whether "complete" means "ready for QA" or "fully done". Don't skip workflow stages.
 
 ## Workflow patterns
@@ -118,10 +126,6 @@ User: "PROJ-123 is complete — all ACs pass, tests green. Mark it done."
 Response:
 
 1. Fetch PROJ-123 → Status: "In Progress"
-2. Get transitions → Find transition to "Done" or "In Review"
-3. Confirm: "I'll add a completion comment and transition PROJ-123 to Done. Proceed?"
-4. On yes:
-   - Add structured comment with AC status and branch info
-   - Execute transition via the discovered transition ID
-   - Verify status changed
-5. Report: "✅ PROJ-123 moved to Done with completion summary"
+2. Determine the completion destination from the user's intent
+3. Coordinate the completion comment through `jira-comment` and the status change through `jira-update-status`
+4. Report: "✅ PROJ-123 moved to Done with completion summary"

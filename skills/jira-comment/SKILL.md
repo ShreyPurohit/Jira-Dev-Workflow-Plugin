@@ -30,10 +30,14 @@ compose.
 ### Adding a comment
 
 1. Determine the comment content:
-   - If the user provides specific text, use that.
-   - If the user asks to document progress, construct a structured comment.
 
-2. **Always confirm** the comment content before posting: "I'll add this comment to PROJ-123:\n\n[comment preview]\n\nProceed?"
+- If the user provides exact comment text and explicitly asks to post it, use
+  that request as confirmation.
+- If the user asks to document progress, construct a structured comment.
+
+2. If the comment is generated, reformatted, or substantially drafted by the
+   skill, show the proposed comment and ask for confirmation before posting:
+   "I'll add this comment to PROJ-123:\n\n[comment preview]\n\nProceed?"
 
 3. On confirmation, call `jira_add_comment` with the issue key and formatted body.
 
@@ -99,7 +103,7 @@ compose.
 
 ## Important rules
 
-- **Always confirm before posting.** Comments are visible to the whole team.
+- **Confirm generated or substantially drafted comments before posting.** Exact comment text explicitly provided by the user for posting does not require a second confirmation.
 - **Use markdown formatting.** Jira Cloud renders markdown in comments.
 - **Keep comments concise and actionable.** Don't dump entire file diffs — summarize what changed and why.
 - **Don't add comments for trivial status updates** that the transition itself communicates. If the user just transitioned to "In Progress", a comment saying "Started work" adds no value.

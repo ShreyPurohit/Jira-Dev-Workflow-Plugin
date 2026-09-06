@@ -56,6 +56,7 @@ Common JQL patterns:
 - **Respect project filters.** If `JIRA_PROJECTS_FILTER` is set, only search within those projects.
 - **Comments are read-only here.** If the user wants to add a comment, defer to the jira-comment skill.
 - **Transitions are read-only here.** If the user asks to change status, defer to the jira-update-status skill.
+- **Sprint reporting is out of scope here.** If the user asks about current sprint progress, workload, blockers, or standup preparation, defer to the jira-sprint skill.
 
 ## Error handling
 

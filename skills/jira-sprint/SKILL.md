@@ -10,18 +10,27 @@ Show the current sprint's status â€” your tickets, team progress, and blockers â
 ## When to use
 
 - User says "what's my sprint looking like?"
-- User says "show me my tickets"
+- User says "show me my current sprint tickets"
+- User says "show my sprint workload"
 - User says "sprint status"
-- User says "what am I working on?"
-- User says "what's blocking?"
-- User says "show me the board"
-- User says "standup prep" or "what should I report in standup?"
+- User says "what am I working on in this sprint?"
+- User says "what is blocking this sprint?"
+- User says "show the current sprint board"
+- User says "prepare me for sprint standup" or "what should I report in sprint standup?"
+
+## Responsibility
+
+This skill owns sprint-specific visibility and reporting: current sprint
+tickets, sprint workload, progress, blockers, and standup preparation.
+
+General Jira issue searching or listing without sprint context belongs to
+`jira-read`.
 
 ## How to respond
 
 ### My tickets (default)
 
-When the user asks about their own work:
+When the user asks about their own work in the current sprint:
 
 1. Call `jira_search` with JQL: `assignee = currentUser() AND sprint in openSprints() ORDER BY status ASC, priority DESC`
 2. Present grouped by status:
@@ -66,7 +75,7 @@ When the user asks about the full sprint or team:
 
 ### Blockers
 
-When the user asks "what's blocking?":
+When the user asks "what is blocking this sprint?":
 
 1. Search for flagged issues: `sprint in openSprints() AND project = <PROJECT> AND (labels = blocked OR labels = impediment OR flagged = impediment)`
 2. Also check for issues with no status change in 3+ days: `sprint in openSprints() AND status = "In Progress" AND updated <= -3d`
@@ -74,7 +83,7 @@ When the user asks "what's blocking?":
 
 ### Standup prep
 
-When the user says "standup" or "standup prep":
+When the user says "sprint standup" or "sprint standup prep":
 
 1. Fetch user's issues updated in last 24h: `assignee = currentUser() AND updated >= -1d ORDER BY updated DESC`
 2. Fetch user's current in-progress: `assignee = currentUser() AND status = "In Progress"`

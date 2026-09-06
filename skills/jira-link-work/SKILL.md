@@ -15,7 +15,7 @@ tickets. The defining trait of this skill: the comment content is derived from g
 - User says "link my commit to PROJ-123"
 - User says "link this PR to PROJ-789"
 - User says "link my branch to PROJ-123"
-- User says "connect my git work to the ticket"
+- User says "link my Git work to PROJ-123"
 - User provides a commit hash or PR URL to attach to an issue
 
 ## When NOT to use
@@ -83,9 +83,10 @@ Status: Open
 Branch: feat/PROJ-123-fix-login-css → development
 ```
 
-### Post progress update
+### Record Git progress update
 
-When the user says "post progress on PROJ-123":
+When the user says "link my development progress to PROJ-123" or "record my
+Git activity on PROJ-123":
 
 1. Gather from git: current branch, commit count since base, files changed.
 2. Ask the user for a brief status note (optional).

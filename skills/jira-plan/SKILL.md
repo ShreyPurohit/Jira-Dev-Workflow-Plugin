@@ -7,6 +7,23 @@ description: Analyze Jira issue requirements and create structured implementatio
 
 Analyze a Jira issue's requirements and create a structured implementation plan.
 
+## Responsibility
+
+This skill owns Jira requirement analysis, acceptance-criteria interpretation,
+implementation planning, and identifying dependencies or ambiguities.
+
+It does not own:
+
+- General Jira reading or searching → use `jira-read`.
+- Status changes → use `jira-update-status` or `jira-start-work` for starting work.
+- Comment creation → use `jira-comment`.
+- Branch creation → use `jira-branch`.
+- Git-to-Jira traceability → use `jira-link-work`.
+- Sprint reporting → use `jira-sprint`.
+
+It may read the Jira information needed to understand requirements, including
+relevant comments when appropriate, but it does not mutate Jira or Git state.
+
 ## When to use
 
 - User says "create an implementation plan for PROJ-123"
