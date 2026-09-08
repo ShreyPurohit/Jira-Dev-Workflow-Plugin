@@ -61,7 +61,7 @@ Common JQL patterns:
 ## Error handling
 
 - **Issue not found**: "I couldn't find issue PROJ-123. Please verify the issue key exists in your Jira instance."
-- **Authentication failure**: "Jira authentication failed. Please verify your JIRA_URL, JIRA_USERNAME, and JIRA_API_TOKEN environment variables are configured correctly."
+- **Authentication failure**: "Jira authentication failed. Please reconnect or re-authorize the Atlassian Rovo MCP connection in your compatible client and verify that the authorized Jira account has the required permissions."
 - **Permission denied**: "You don't have permission to view PROJ-123. Check your Jira project access."
 
 ## Examples

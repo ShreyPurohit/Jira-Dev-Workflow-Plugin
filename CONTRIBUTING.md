@@ -11,31 +11,15 @@ git clone https://github.com/ShreyPurohit/Jira-Dev-Workflow-Plugin.git
 cd Jira-Dev-Workflow-Plugin
 ```
 
-### 2. Install dependencies
+### 2. Authenticate through your client
 
-The Plugin uses the Model Context Protocol (MCP) via `uvx` for dynamic MCP server execution.
+The plugin uses the official Atlassian Rovo MCP v2 server at
+`https://mcp.atlassian.com/v2/mcp` over Streamable HTTP. When manually testing
+Jira functionality, connect and authorize the Rovo MCP connection through your
+compatible Agent Plugin/MCP client. Do not configure Jira credentials in this
+repository or in `mcp.json`.
 
-Ensure you have `uv` installed:
-
-```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
-```
-
-This provides the `uvx` command used by `mcp.json`.
-
-### 3. Configure your Jira environment
-
-Set up your local Jira credentials as environment variables:
-
-```bash
-export JIRA_URL="https://yourinstance.atlassian.net"
-export JIRA_USERNAME="your-email@company.com"
-export JIRA_API_TOKEN="your-api-token"
-```
-
-See the README for instructions on obtaining a Jira API token.
-
-### 4. Import the plugin into a compatible Agent Plugin client
+### 3. Import the plugin into a compatible Agent Plugin client
 
 - **Kiro:** Powers panel → Add Custom Power → Import from GitHub → paste the repository URL
 - **VS Code:** Follow the [Agent Plugins setup guide](https://code.visualstudio.com/docs/agent-customization/agent-plugins)
@@ -43,7 +27,7 @@ See the README for instructions on obtaining a Jira API token.
 
 Point the client to this repository or your local clone.
 
-### 5. Test manually
+### 4. Test manually
 
 Try natural-language prompts in your Agent Plugin client to verify the Plugin works:
 
@@ -79,7 +63,7 @@ Try natural-language prompts in your Agent Plugin client to verify the Plugin wo
 ### Key files
 
 - **`plugin.json`:** Defines the plugin identity, version, and metadata according to the [Agent Plugins 1.0.0 specification](https://agent-plugins.org/specification).
-- **`mcp.json`:** Configures the `mcp-atlassian` MCP server for standard Jira API access.
+- **`mcp.json`:** Configures the official Atlassian Rovo MCP v2 server over Streamable HTTP; the compatible client handles authorization.
 - **`skills/*/SKILL.md`:** Each skill is a Markdown file with YAML frontmatter defining its name and description, followed by natural-language instructions for the AI agent.
 
 ## Adding or Modifying a Skill

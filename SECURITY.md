@@ -33,16 +33,16 @@ A clear and detailed vulnerability report should include:
 ### Credential Management
 
 - **Never commit API tokens or credentials to this repository or any Git repository**
-- Use environment variables to inject credentials at runtime
-- Configure your shell, CI/CD system, or IDE to provide credentials securely
-- Regularly rotate API tokens and revoke compromised ones immediately
+- Authentication is handled by the compatible MCP client through Atlassian's supported authorization mechanisms
+- Do not add Jira credentials, authorization headers, or tokens to plugin configuration
+- Revoke compromised credentials promptly through Atlassian
 
 ### Jira Access Control
 
-- Use a Jira API token with the **minimum required permissions**
+- Grant the authorized Jira account the **minimum required permissions**
 - If the Plugin only needs read access, do not grant write permissions
-- Consider using project-specific or organization-scoped tokens where possible
-- Audit who has access to your Jira instance and API tokens
+- Review the client's Atlassian authorization scopes before enabling write-capable workflows
+- Audit who has access to your Jira projects and authorization connection
 
 ### Local Security
 
@@ -52,26 +52,25 @@ A clear and detailed vulnerability report should include:
 
 ### Third-Party Dependencies
 
-This Plugin depends on:
-
-- `mcp-atlassian` (version 0.23.1) — Jira MCP server
-
-These are third-party implementations. Review their documentation and security practices. Keep your MCP installations up to date.
+This Plugin uses the official Atlassian Rovo MCP v2 integration over Streamable
+HTTP at `https://mcp.atlassian.com/v2/mcp`. Authentication is handled by the
+compatible MCP client. Review Atlassian's security guidance and keep the client
+authorization current.
 
 ## Security Considerations
 
 ### What this Plugin does (and doesn't do)
 
-- ✅ Communicates with your Jira instance using APIs you configure
+- ✅ Communicates with your Jira instance through the official Atlassian Rovo MCP v2 service
 - ✅ Executes locally on your machine or CI/CD environment
 - ✅ Processes information only during active requests (no background collection)
 - ❌ Does not operate a backend server or database
 - ❌ Does not store your credentials or Jira data
-- ❌ Does not send data to third parties (beyond Jira, which you explicitly configure)
+- ❌ Does not operate a separate backend or credential store
 
 ### Known limitations
 
-- **No end-to-end encryption:** The Plugin communicates with Jira over HTTPS (as configured by your Jira instance). It does not add additional encryption layers.
+- **Transport and authorization:** The Plugin relies on the official Rovo MCP v2 HTTPS service and the compatible MCP client's authorization handling.
 - **No audit logging:** The Plugin does not maintain its own security audit log. Jira itself maintains access logs.
 - **No rate limiting:** The Plugin defers to your Jira instance's rate limiting and authentication enforcement.
 - **Local execution:** The Plugin runs on your machine or CI/CD environment. Its security depends on the security of that environment.

@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Changed
+
+- Migrated from the third-party `mcp-atlassian` stdio server to the official Atlassian Rovo MCP v2 server.
+- Switched Jira connectivity to the remote Streamable HTTP endpoint.
+- Authentication is now handled through the compatible MCP client.
+- Updated documentation to reflect the new Atlassian Rovo MCP connection model.
+
 ## [1.1.1] - 2026-09-06
 
 ### Added
