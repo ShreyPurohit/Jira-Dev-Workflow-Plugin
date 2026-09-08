@@ -13,7 +13,7 @@ The Jira Development Workflow Plugin is an open-source Agent Plugin that helps d
 The Plugin:
 
 - Runs locally through your compatible AI coding client
-- Connects to your Jira instance through Model Context Protocol (MCP) servers that you configure
+- Connects to your Jira instance through the `mcp-atlassian` Model Context Protocol (MCP) server that you configure
 - Does not operate its own backend servers or hosted services
 - Does not collect, store, or transmit data outside of what you explicitly direct it to do
 
@@ -27,7 +27,6 @@ When you use the Plugin, it may process information such as:
 - Issue statuses and available workflow transitions
 - Sprint information and assignments
 - Assignee and project information returned by your Jira instance
-- Jira attachments (when the attachment MCP is used)
 - Local Git branch names, commit messages, and pull request context (when Git-linking skills are invoked)
 
 The Plugin processes this information to fulfill the specific tasks you request (e.g., "summarize this issue", "create a branch for this work").
@@ -67,13 +66,13 @@ Your use of this Plugin involves interaction with third-party services. You are 
 
 ### Atlassian / Jira
 
-- The Plugin communicates with your Jira instance via the MCP servers.
+- The Plugin communicates with your Jira instance through `mcp-atlassian`.
 - Jira processes and stores your issues, comments, and project data according to Atlassian's privacy policy.
 - Review: https://www.atlassian.com/legal/privacy-policy
 
-### MCP Servers
+### MCP Server
 
-The Plugin uses two MCP implementations:
+The Plugin uses the following MCP implementation:
 
 - `mcp-atlassian` (version 0.23.1) — provides access to Jira APIs
 

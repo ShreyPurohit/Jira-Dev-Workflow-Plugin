@@ -102,7 +102,7 @@ jira-dev-workflow/
 ### How it works
 
 1. **`plugin.json`** declares the plugin identity, keywords, and version following the [Agent Plugins 1.0.0 spec](https://agent-plugins.org/specification).
-2. **`mcp.json`** configures two stdio MCP servers (`mcp-atlassian` for Jira API tools and `mcp-atlassian-attachments` for downloading Jira attachments).
+2. **`mcp.json`** configures the `mcp-atlassian` stdio MCP server for Jira API tools.
 3. **Skills** are natural-language instructions (Agent Skills format) that teach the AI agent HOW to use the Jira MCP tools for specific development tasks.
 4. When you mention a Jira issue key or ask about a Jira task, the appropriate skill activates and guides the agent through the correct workflow.
 
@@ -183,14 +183,13 @@ These values are used by the Jira MCP tools and should match the environment whe
 
 ## MCP Servers
 
-This plugin provides two MCP servers:
+This plugin provides one MCP server:
 
-| Server                      | Package                            | Tools         | Purpose                   |
-| --------------------------- | ---------------------------------- | ------------- | ------------------------- |
-| `mcp-atlassian`             | `mcp-atlassian==0.23.1`            | 63 Jira tools | Full Jira API access      |
-| `mcp-atlassian-attachments` | `mcp-atlassian-attachments==0.2.0` | 1 tool        | Download Jira attachments |
+| Server          | Package                 | Tools         | Purpose              |
+| --------------- | ----------------------- | ------------- | -------------------- |
+| `mcp-atlassian` | `mcp-atlassian==0.23.1` | 63 Jira tools | Full Jira API access |
 
-Both MCP servers require [uv] installed (uvx command available).
+The MCP server requires [uv] installed (uvx command available).
 
 ```bash
 # Install uv (provides uvx)

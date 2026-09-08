@@ -85,8 +85,8 @@ When the user asks "what is blocking this sprint?":
 
 When the user says "sprint standup" or "sprint standup prep":
 
-1. Fetch user's issues updated in last 24h: `assignee = currentUser() AND updated >= -1d ORDER BY updated DESC`
-2. Fetch user's current in-progress: `assignee = currentUser() AND status = "In Progress"`
+1. Fetch the user's sprint issues updated in the last 24 hours: `assignee = currentUser() AND sprint in openSprints() AND updated >= -1d ORDER BY updated DESC`
+2. Fetch the user's current in-progress sprint issues: `assignee = currentUser() AND sprint in openSprints() AND status = "In Progress"`
 3. Format as standup:
 
 ```
@@ -110,7 +110,7 @@ When the user says "sprint standup" or "sprint standup prep":
 - **Use `currentUser()`** for personal queries — never guess the username.
 - **Group by status** — always show the most actionable items first (In Progress > To Do > Done).
 - **Show priority** only for High and above — don't clutter with Medium/Low markers on everything.
-- **Respect JQL limitations** — if the instance doesn't support `sprint in openSprints()`, fall back to status-based queries.
+- **Require sprint scope for standup reporting** — use `sprint in openSprints()` when supported. If it is unsupported, use known sprint context; otherwise state that the active sprint could not be determined and ask for the sprint or project context. Never silently report unrelated personal work.
 - **Never fabricate issue data** — only report what Jira returns.
 
 ## Error handling

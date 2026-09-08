@@ -29,11 +29,14 @@ tickets. The defining trait of this skill: the comment content is derived from g
 
 ### Link current branch + recent commits
 
-When the user says "link my work to PROJ-123":
+When the user says "link my Git work to PROJ-123":
 
 1. Get the current branch name from git.
-2. Get recent commits on this branch (compared to main/development).
-3. Format and post a structured comment to the issue.
+2. Determine the appropriate base branch from repository context or the user's request.
+   If it cannot be determined safely, ask the user which base branch to use;
+   never assume `main` or `development`.
+3. Get recent commits on this branch compared with the confirmed base branch.
+4. Format and post a structured comment to the issue.
 
 **Comment format:**
 
@@ -41,7 +44,7 @@ When the user says "link my work to PROJ-123":
 🔗 Development Progress
 
 Branch: feat/PROJ-123-fix-login-css
-Base: development
+Base: <confirmed-base>
 
 Commits:
 • abc1234 — Fix responsive breakpoint for mobile nav
@@ -80,7 +83,7 @@ When the user says "link PR #42 to PROJ-123" or provides a PR URL:
 PR #42: Fix responsive breakpoint for mobile nav
 URL: https://github.com/org/repo/pull/42
 Status: Open
-Branch: feat/PROJ-123-fix-login-css → development
+Branch: feat/PROJ-123-fix-login-css → <confirmed-base>
 ```
 
 ### Record Git progress update
@@ -88,9 +91,9 @@ Branch: feat/PROJ-123-fix-login-css → development
 When the user says "link my development progress to PROJ-123" or "record my
 Git activity on PROJ-123":
 
-1. Gather from git: current branch, commit count since base, files changed.
+1. Gather only the Git information relevant to the requested progress link.
 2. Ask the user for a brief status note (optional).
-3. Post a structured comment:
+3. Post a structured comment containing only information actually gathered:
 
 ```
 📋 Progress Update
@@ -114,18 +117,19 @@ Extract the Jira issue key from the user's request. If not explicitly mentioned,
 Use git commands to collect relevant data:
 
 - `git branch --show-current` — current branch
-- `git log --oneline <base>..HEAD` — commits on this branch
-- `git diff --stat <base>..HEAD` — files changed summary
+- `git log --oneline <confirmed-base>..HEAD` — commits on this branch, when a safe base is known
+- `git diff --stat <confirmed-base>..HEAD` — files changed summary, when relevant and a safe base is known
 - `git show --stat <hash>` — specific commit details
+
+If repository context does not identify a safe base branch, ask the user before
+running comparisons. Do not substitute `main` or `development` by default.
 
 ### Step 3: Format the comment
 
-Build the comment using the formats above. Always include:
-
-- A clear emoji header (🔗 or 📋)
-- Branch name
-- Commit hashes (shortened) with messages
-- File change summary
+Build the comment using the format appropriate to the linked artifact. Include
+only the relevant information actually gathered, such as branch details for a
+branch link, commit details for a commit link, PR details for a PR link, and
+file summaries only when they are relevant and available.
 
 ### Step 4: Confirm and post
 
@@ -138,7 +142,8 @@ Show the comment preview to the user and ask for confirmation before posting via
 - **Infer issue key from branch** when not explicitly provided (pattern: `feat/<KEY>-slug`).
 - **Keep comments concise** — max 10 commits listed; if more, summarize with "... and N more commits".
 - **Use the issue key** the user provides, not one from a different ticket.
-- **Never include file contents or diffs** in comments — only metadata (paths, line counts).
+- **Report only artifact-specific information**: commit details for commit links, PR details for PR links, branch details for branch links, and file summaries only when actually gathered and relevant.
+- **Never include file contents or full diffs** in comments — only relevant metadata such as paths and line counts.
 - **Respect privacy** — don't include author emails, only names.
 
 ## Error handling
