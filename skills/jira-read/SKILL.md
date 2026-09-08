@@ -21,7 +21,7 @@ Read, summarize, and search Jira issues through natural language.
 
 When the user mentions an issue key:
 
-1. Call `jira_get_issue` with the issue key.
+1. Call `getJiraIssue` with the issue key.
 2. Present a structured summary:
    - **Key & Summary** — the issue title
    - **Status** — current status and category
@@ -40,7 +40,7 @@ When the user mentions an issue key:
 When the user asks to search or list:
 
 1. Construct appropriate JQL from their request.
-2. Call `jira_search` with the JQL.
+2. Call `searchJiraIssuesUsingJql` with the JQL.
 3. Present results as a concise table or list.
 
 Common JQL patterns:

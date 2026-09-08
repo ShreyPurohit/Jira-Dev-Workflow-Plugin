@@ -28,13 +28,14 @@ one of the two specialized flows.
 
 ### Step 1: Read current state
 
-1. Call `jira_get_issue` to confirm the current status.
+1. Call `getJiraIssue` to confirm the current status.
 2. Report: "PROJ-123 is currently in [current status]."
 
 ### Step 2: Discover transitions
 
-1. Call `jira_get_transitions` for the issue.
-2. Parse the available transitions. Each transition has:
+1. Use `discover` to identify the `listJiraIssueTransitions` operation and its schema.
+2. Use `executeRead` with the discovered operation to retrieve the available transitions.
+3. Parse the available transitions. Each transition has:
    - `id` — the transition ID to execute
    - `name` — the transition's label (DO NOT match on this)
    - `to.name` — the DESTINATION status name (MATCH ON THIS)
@@ -54,7 +55,7 @@ The user speaks in terms of destination statuses ("move to In Progress"), so mat
 ### Step 4: Confirm and execute
 
 1. **Always confirm** before executing: "I'll transition PROJ-123 from [current] to [destination]. The transition is '[transition name]' (ID: [id]). Proceed?"
-2. On confirmation, call `jira_transition_issue` with the transition ID.
+2. On confirmation, call `transitionJiraIssue` with the transition ID.
 3. Verify by re-reading the issue: confirm the status actually changed.
 
 ### Step 5: Report
@@ -73,7 +74,8 @@ The user speaks in terms of destination statuses ("move to In Progress"), so mat
 
 ## Common workflow transitions
 
-These are EXAMPLES — always discover dynamically via `jira_get_transitions`:
+These are EXAMPLES — always discover the transition operation dynamically via
+`discover`, then use `executeRead` to retrieve transitions.
 
 | User says          | Likely destination (`to.name`) |
 | ------------------ | ------------------------------ |
@@ -98,6 +100,6 @@ Response:
 1. Fetch PROJ-123 → Status: "In Progress"
 2. Get transitions → Found: `{id: "31", name: "Submit for Review", to: {name: "In Review"}}`
 3. Confirm: "I'll transition PROJ-123 from In Progress → In Review via the 'Submit for Review' transition. Proceed?"
-4. On yes: Execute `jira_transition_issue(issue_key="PROJ-123", transition_id="31")`
+4. On yes: Execute `transitionJiraIssue` with the discovered transition ID
 5. Verify: Re-read issue, confirm status is "In Review"
 6. Report: "✅ PROJ-123 is now In Review"

@@ -1,15 +1,9 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
   "mcpServers": {
-    "mcp-atlassian": {
-      "type": "stdio",
-      "command": "uvx",
-      "args": ["mcp-atlassian==0.23.1"],
-      "env": {
-        "JIRA_URL": "${JIRA_URL}",
-        "JIRA_USERNAME": "${JIRA_USERNAME}",
-        "JIRA_API_TOKEN": "${JIRA_API_TOKEN}"
-      }
+    "atlassian-rovo-mcp": {
+      "type": "streamable-http",
+      "url": "https://mcp.atlassian.com/v2/mcp"
     }
   }
 }

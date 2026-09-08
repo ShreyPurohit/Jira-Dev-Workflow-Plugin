@@ -26,7 +26,7 @@ Progress) — a narrowed case of the general `jira-update-status`.
 
 ### Step 1: Verify the ticket
 
-1. Call `jira_get_issue` to read the current state.
+1. Call `getJiraIssue` to read the current state.
 2. Verify:
    - The ticket exists
    - The ticket is in a state that can be transitioned to "In Progress" (typically "To Do" or equivalent)
@@ -35,7 +35,9 @@ Progress) — a narrowed case of the general `jira-update-status`.
 ### Step 2: Transition to In Progress
 
 Use the transition discovery, destination matching, confirmation, execution, and
-verification procedure defined by `jira-update-status`.
+verification procedure defined by `jira-update-status`. That procedure uses
+`discover` to identify `listJiraIssueTransitions`, `executeRead` to retrieve
+transitions, and `transitionJiraIssue` to perform the confirmed write.
 
 - The target is the workflow's **In Progress equivalent**.
 - Match the destination using `transition.to.name`, never the transition label

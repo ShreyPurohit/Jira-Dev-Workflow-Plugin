@@ -133,7 +133,8 @@ file summaries only when they are relevant and available.
 
 ### Step 4: Confirm and post
 
-Show the comment preview to the user and ask for confirmation before posting via `jira_add_comment`.
+Show the comment preview to the user and ask for confirmation before posting via
+`addOrEditJiraIssueComment`.
 
 ## Rules
 

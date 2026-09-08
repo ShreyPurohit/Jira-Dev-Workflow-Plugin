@@ -38,7 +38,7 @@ creation, and it does not create branches or link Git work to Jira.
 
 ### Step 1: Verify current state
 
-1. Call `jira_get_issue` to read the current status.
+1. Call `getJiraIssue` to read the current status.
 2. Confirm it's in a state that makes sense to complete (typically "In Progress").
 3. If it's already Done, inform the user.
 

@@ -19,7 +19,7 @@ Create a git feature branch from a Jira issue, with a smart slug derived from th
 
 ### Step 1: Fetch the issue
 
-1. Call `jira_get_issue` with the issue key to get the summary and status.
+1. Call `getJiraIssue` with the issue key to get the summary and status.
 2. If the issue doesn't exist, report the error and stop.
 
 ### Step 2: Generate branch name

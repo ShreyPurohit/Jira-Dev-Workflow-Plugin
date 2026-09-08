@@ -32,7 +32,7 @@ General Jira issue searching or listing without sprint context belongs to
 
 When the user asks about their own work in the current sprint:
 
-1. Call `jira_search` with JQL: `assignee = currentUser() AND sprint in openSprints() ORDER BY status ASC, priority DESC`
+1. Call `searchJiraIssuesUsingJql` with JQL: `assignee = currentUser() AND sprint in openSprints() ORDER BY status ASC, priority DESC`
 2. Present grouped by status:
 
 ```
@@ -55,7 +55,7 @@ When the user asks about their own work in the current sprint:
 
 When the user asks about the full sprint or team:
 
-1. Call `jira_search` with JQL: `sprint in openSprints() AND project = <PROJECT> ORDER BY status ASC, assignee ASC`
+1. Call `searchJiraIssuesUsingJql` with JQL: `sprint in openSprints() AND project = <PROJECT> ORDER BY status ASC, assignee ASC`
 2. Present a summary:
 
 ```
@@ -77,16 +77,16 @@ When the user asks about the full sprint or team:
 
 When the user asks "what is blocking this sprint?":
 
-1. Search for flagged issues: `sprint in openSprints() AND project = <PROJECT> AND (labels = blocked OR labels = impediment OR flagged = impediment)`
-2. Also check for issues with no status change in 3+ days: `sprint in openSprints() AND status = "In Progress" AND updated <= -3d`
+1. Call `searchJiraIssuesUsingJql` for flagged issues: `sprint in openSprints() AND project = <PROJECT> AND (labels = blocked OR labels = impediment OR flagged = impediment)`
+2. Also call `searchJiraIssuesUsingJql` for issues with no status change in 3+ days: `sprint in openSprints() AND status = "In Progress" AND updated <= -3d`
 3. Present as blockers list.
 
 ### Standup prep
 
 When the user says "sprint standup" or "sprint standup prep":
 
-1. Fetch the user's sprint issues updated in the last 24 hours: `assignee = currentUser() AND sprint in openSprints() AND updated >= -1d ORDER BY updated DESC`
-2. Fetch the user's current in-progress sprint issues: `assignee = currentUser() AND sprint in openSprints() AND status = "In Progress"`
+1. Call `searchJiraIssuesUsingJql` for the user's sprint issues updated in the last 24 hours: `assignee = currentUser() AND sprint in openSprints() AND updated >= -1d ORDER BY updated DESC`
+2. Call `searchJiraIssuesUsingJql` for the user's current in-progress sprint issues: `assignee = currentUser() AND sprint in openSprints() AND status = "In Progress"`
 3. Format as standup:
 
 ```

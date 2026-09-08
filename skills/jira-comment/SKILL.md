@@ -39,7 +39,7 @@ compose.
    skill, show the proposed comment and ask for confirmation before posting:
    "I'll add this comment to PROJ-123:\n\n[comment preview]\n\nProceed?"
 
-3. On confirmation, call `jira_add_comment` with the issue key and formatted body.
+3. On confirmation, call `addOrEditJiraIssueComment` with the issue key and formatted body.
 
 4. Confirm success: "✅ Comment added to PROJ-123."
 
@@ -136,5 +136,5 @@ Response:
    ```
 
 2. Confirm with user
-3. Post via `jira_add_comment`
+3. Post via `addOrEditJiraIssueComment`
 4. Report success

@@ -36,7 +36,7 @@ relevant comments when appropriate, but it does not mutate Jira or Git state.
 
 ### Step 1: Read the ticket thoroughly
 
-1. Call `jira_get_issue` with the issue key, requesting all fields including description and comments.
+1. Call `getJiraIssue` with the issue key, requesting all fields including description and comments.
 2. Extract:
    - Summary/title
    - Full description
