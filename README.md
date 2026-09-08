@@ -250,8 +250,8 @@ We welcome contributions! For guidelines on development setup, testing, and subm
 
 Key points:
 
-- Install `uv` for MCP server support
-- Configure your Jira environment variables
+- Connect and authorize the official Atlassian Rovo MCP v2 server through your client
+- Test in your Agent Plugin client
 - Test in your Agent Plugin client
 - Follow the skill design principles (single responsibility, no overlap, safety first)
 - Update documentation and CHANGELOG.md for release-relevant changes
