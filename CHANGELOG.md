@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [2.0.0] - 2026-09-13
+
 ### Changed
 
 - Migrated from the third-party `mcp-atlassian` stdio server to official Atlassian Rovo MCP v2 over Streamable HTTP (`https://mcp.atlassian.com/v2/mcp`), with client-managed OAuth.
