@@ -14,10 +14,8 @@
 .DS_Store
 Thumbs.db
 
-# Node (if using npx for mcp-atlassian)
+# Local language runtimes (not required by this plugin)
 node_modules/
-
-# Python (if using uvx for mcp-atlassian)
 __pycache__/
 *.pyc
 .venv/

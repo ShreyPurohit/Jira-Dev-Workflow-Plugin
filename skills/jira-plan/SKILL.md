@@ -1,6 +1,7 @@
 ---
 name: jira-plan
-description: Analyze Jira issue requirements and create structured implementation plans
+description: Analyze Jira issue requirements and create structured implementation plans. Use when the user asks to plan, break down, or analyze what to build for a ticket.
+compatibility: Requires Atlassian Cloud Jira through Atlassian Rovo MCP v2 (https://mcp.atlassian.com/v2/mcp) with client-managed OAuth.
 ---
 
 # Jira Plan
@@ -32,11 +33,18 @@ relevant comments when appropriate, but it does not mutate Jira or Git state.
 - User says "break down PROJ-123 into tasks"
 - User asks to understand what needs to be built for a specific ticket
 
+## Atlassian MCP conventions
+
+1. Call `getAccessibleAtlassianResources` first and obtain the `cloudId` for the user's Jira Cloud site. If more than one site is returned, ask which to use; do not guess.
+2. Pass that `cloudId` on every subsequent Jira tool call.
+3. Call `getJiraIssue` directly. If comments are needed and not included in that response, use `discover` then `executeRead` for `listJiraIssueComments`.
+4. Never embed credentials in plugin files or Jira comments.
+
 ## How to respond
 
 ### Step 1: Read the ticket thoroughly
 
-1. Call `getJiraIssue` with the issue key, requesting all fields including description and comments.
+1. Call `getJiraIssue` with the issue key and `cloudId`. Use the fields the tool actually returns; do not assume a third-party "all fields" parameter exists.
 2. Extract:
    - Summary/title
    - Full description

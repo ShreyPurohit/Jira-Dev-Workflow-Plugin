@@ -1,6 +1,7 @@
 ---
 name: jira-complete
 description: Wrap up a finished Jira issue — post a confirmed completion comment AND transition it to the final Done status in one flow. Use only for final completion; for a bare status change use jira-update-status.
+compatibility: Requires Atlassian Cloud Jira through Atlassian Rovo MCP v2 (https://mcp.atlassian.com/v2/mcp) with client-managed OAuth.
 ---
 
 # Jira Complete
@@ -34,11 +35,17 @@ creation, and it does not create branches or link Git work to Jira.
 - **Posting a comment without transitioning** → use `jira-comment`.
 - **Creating or linking Git work** → use `jira-branch` or `jira-link-work`.
 
+## Atlassian MCP conventions
+
+1. Call `getAccessibleAtlassianResources` first and obtain the `cloudId` for the user's Jira Cloud site. If more than one site is returned, ask which to use; do not guess.
+2. Pass that `cloudId` on every subsequent Jira tool call.
+3. Coordinate writes through `jira-comment` (add-only comments) and `jira-update-status` (destination matching).
+
 ## How to respond
 
 ### Step 1: Verify current state
 
-1. Call `getJiraIssue` to read the current status.
+1. Call `getJiraIssue` with `cloudId` to read the current status.
 2. Confirm it's in a state that makes sense to complete (typically "In Progress").
 3. If it's already Done, inform the user.
 

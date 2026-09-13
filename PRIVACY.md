@@ -1,6 +1,6 @@
 # Privacy Policy
 
-**Effective Date:** August 29, 2026
+**Effective Date:** September 13, 2026
 
 ## Overview
 
@@ -13,7 +13,7 @@ The Jira Development Workflow Plugin is an open-source Agent Plugin that helps d
 The Plugin:
 
 - Runs locally through your compatible AI coding client
-- Connects to your Jira instance through the official Atlassian Rovo MCP v2 server
+- Connects to **Atlassian Cloud** Jira through Atlassian's hosted Rovo MCP v2 service
 - Does not operate its own backend servers or hosted services
 - Does not collect, store, or transmit data outside of what you explicitly direct it to do
 
@@ -55,7 +55,7 @@ The Plugin does not maintain its own credential database, backend authentication
 The repository provides no hosted backend, analytics service, telemetry system, or database of its own.
 
 - **Local storage:** The Plugin may read/write to your local Git repository and your local file system (as needed for branch creation and reading).
-- **Remote storage:** The only remote access is to your Jira instance and your Git repository hosting (e.g., GitHub), which are your responsibility.
+- **Remote storage:** Remote access is to Atlassian's Rovo MCP endpoint, your Jira Cloud site, and your Git hosting. This project does not operate those services.
 - **No telemetry:** This repository does not collect usage analytics, crash reports, or telemetry data.
 
 ## Third-Party Services
@@ -75,7 +75,7 @@ The Plugin uses Atlassian's hosted Rovo MCP v2 service over Streamable HTTP.
 - Endpoint: `https://mcp.atlassian.com/v2/mcp`
 - Transport: `streamable-http`
 
-Authentication and authorization are handled by the compatible MCP client. Review Atlassian's policies and documentation for details about its service.
+Authentication and authorization are handled by the compatible MCP client. Some tool calls may consume Rovo credits on the Atlassian site. Review Atlassian's policies and documentation for details about its service.
 
 ### Your AI Coding Client
 
@@ -105,7 +105,7 @@ This open-source repository:
 2. **Credential rotation:** Follow Atlassian guidance to rotate or revoke compromised authorization credentials.
 3. **Permission scoping:** Grant the authorized Jira account only the permissions required for the workflows you use.
 4. **Repository access:** Ensure your Git repositories are accessible only to authorized users. Do not commit Jira tokens or sensitive data.
-5. **Audit:** Regularly audit who has access to your Jira instance and API tokens.
+5. **Audit:** Regularly audit who has access to your Jira Cloud site and Atlassian authorization connections.
 
 ## Contact
 

@@ -1,6 +1,7 @@
 ---
 name: jira-comment
 description: Post a free-text progress, note, or completion comment on a Jira issue. Use for prose updates the user dictates or asks you to compose — NOT for linking git branches/commits/PRs (use jira-link-work) and NOT for status changes (use jira-update-status).
+compatibility: Requires Atlassian Cloud Jira through Atlassian Rovo MCP v2 (https://mcp.atlassian.com/v2/mcp) with client-managed OAuth.
 ---
 
 # Jira Comment
@@ -25,6 +26,12 @@ compose.
   for a wrap-up comment + transition together).
 - **Reading or summarizing existing comments** → use `jira-read`.
 
+## Atlassian MCP conventions
+
+1. Call `getAccessibleAtlassianResources` first and obtain the `cloudId` for the user's Jira Cloud site. If more than one site is returned, ask which to use; do not guess.
+2. Pass that `cloudId` on every subsequent Jira tool call.
+3. Call `addOrEditJiraIssueComment` to **add** a comment. Omit any existing comment ID unless the user explicitly asked to edit a specific comment.
+
 ## How to respond
 
 ### Adding a comment
@@ -39,7 +46,7 @@ compose.
    skill, show the proposed comment and ask for confirmation before posting:
    "I'll add this comment to PROJ-123:\n\n[comment preview]\n\nProceed?"
 
-3. On confirmation, call `addOrEditJiraIssueComment` with the issue key and formatted body.
+3. On confirmation, call `addOrEditJiraIssueComment` with the issue key, formatted body, and `cloudId`. Do not pass a comment ID when adding a new comment.
 
 4. Confirm success: "✅ Comment added to PROJ-123."
 
@@ -106,6 +113,7 @@ compose.
 - **Don't add comments for trivial status updates** that the transition itself communicates. If the user just transitioned to "In Progress", a comment saying "Started work" adds no value.
 - **Do not inspect Git state or require Git context** for a generic comment. A branch, commit, or PR may be included only when the user explicitly provides it or explicitly asks for Git/development context. For Git-derived comments, use `jira-link-work`.
 - **Never include secrets, tokens, or sensitive paths** in comments.
+- **Add, do not silently edit.** Omit comment ID on new comments so `addOrEditJiraIssueComment` creates an entry.
 
 ## Error handling
 
@@ -136,5 +144,5 @@ Response:
    ```
 
 2. Confirm with user
-3. Post via `addOrEditJiraIssueComment`
+3. Post via `addOrEditJiraIssueComment` (new comment, no comment ID) with `cloudId`
 4. Report success

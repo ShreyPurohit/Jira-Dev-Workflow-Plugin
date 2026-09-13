@@ -53,9 +53,9 @@ A clear and detailed vulnerability report should include:
 ### Third-Party Dependencies
 
 This Plugin uses the official Atlassian Rovo MCP v2 integration over Streamable
-HTTP at `https://mcp.atlassian.com/v2/mcp`. Authentication is handled by the
-compatible MCP client. Review Atlassian's security guidance and keep the client
-authorization current.
+HTTP at `https://mcp.atlassian.com/v2/mcp`. Do not add secrets to `mcp.json`.
+Authentication is handled by the compatible MCP client. Review Atlassian's
+security guidance and keep the client authorization current.
 
 ## Security Considerations
 
@@ -70,7 +70,8 @@ authorization current.
 
 ### Known limitations
 
-- **Transport and authorization:** The Plugin relies on the official Rovo MCP v2 HTTPS service and the compatible MCP client's authorization handling.
+- **Atlassian Cloud only:** The official Rovo MCP v2 endpoint does not replace a self-hosted Jira API.
+- **Transport and authorization:** The Plugin relies on the official Rovo MCP v2 HTTPS service and the compatible MCP client's authorization handling. Agent Plugins defines no portable OAuth fields.
 - **No audit logging:** The Plugin does not maintain its own security audit log. Jira itself maintains access logs.
 - **No rate limiting:** The Plugin defers to your Jira instance's rate limiting and authentication enforcement.
 - **Local execution:** The Plugin runs on your machine or CI/CD environment. Its security depends on the security of that environment.
@@ -85,4 +86,4 @@ For vulnerability reports, please use the private security advisory process desc
 
 ---
 
-**Last updated:** August 29, 2026
+**Last updated:** September 13, 2026

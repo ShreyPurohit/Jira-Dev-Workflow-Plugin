@@ -2,7 +2,9 @@
 
 A task-oriented Jira development workflow plugin that sits between an AI coding agent and the Jira/Git tools it needs for day-to-day delivery work. It packages a structured workflow for reading issues, planning implementation, starting work, creating branches, linking development artifacts back to Jira, and checking sprint progress — without requiring raw API calls from the user.
 
-Built on the open [Agent Plugins](https://agent-plugins.org/) specification — works with any compatible client.
+Built on the open [Agent Plugins 1.0.0](https://agent-plugins.org/specification) specification — works with any compatible client.
+
+**Breaking in 2.0.0:** Jira access uses Atlassian's hosted Rovo MCP v2 (`https://mcp.atlassian.com/v2/mcp`) with **client-managed OAuth**. This plugin supports **Atlassian Cloud only**. Self-hosted Jira and API tokens in plugin environment variables are no longer part of the package.
 
 ## Compatible Clients
 
@@ -47,7 +49,11 @@ https://mcp.atlassian.com/v2/mcp
 
 Use the client's Atlassian authorization flow to authenticate the connection.
 OAuth 2.1 is the recommended method for interactive use. The plugin does not
-launch a local MCP process or require Jira credentials in its configuration.
+launch a local MCP process. Per [Agent Plugins](https://agent-plugins.org/plugin-authors/mcp-servers),
+`mcp.json` has no portable credential fields — do not put tokens or
+`Authorization` headers in the plugin.
+
+Official setup: [Getting started with the Atlassian Rovo MCP Server](https://support.atlassian.com/atlassian-rovo-mcp-server/docs/getting-started-with-the-atlassian-remote-mcp-server/).
 
 ### 3. Verify
 
@@ -77,7 +83,7 @@ If you get issue details back, the plugin is working.
 ## Plugin Structure
 
 ```text
-jira-dev-workflow/
+jira-dev-workflow-plugin/
 ├── plugin.json                 # Agent Plugin manifest (identity + keywords)
 ├── mcp.json                    # MCP server configuration
 ├── README.md                   # This file
@@ -98,13 +104,13 @@ jira-dev-workflow/
 ### How it works
 
 1. **`plugin.json`** declares the plugin identity, keywords, and version following the [Agent Plugins 1.0.0 spec](https://agent-plugins.org/specification).
-2. **`mcp.json`** configures the official Atlassian Rovo MCP v2 server over Streamable HTTP. The hosted endpoint is `https://mcp.atlassian.com/v2/mcp`, and authentication is managed by the compatible MCP client.
-3. **Skills** are natural-language instructions (Agent Skills format) that teach the AI agent HOW to use the Jira MCP tools for specific development tasks.
+2. **`mcp.json`** configures the official Atlassian Rovo MCP v2 server over Streamable HTTP (`type` + `url` only). The hosted endpoint is `https://mcp.atlassian.com/v2/mcp`. Authentication is managed by the compatible MCP client.
+3. **Skills** are Agent Skills (`SKILL.md`) that teach the agent how to use Rovo MCP Jira tools, including resolving `cloudId` via `getAccessibleAtlassianResources` before other calls.
 4. When you mention a Jira issue key or ask about a Jira task, the appropriate skill activates and guides the agent through the correct workflow.
 
 ### Design principles
 
-- **Task-oriented, not API-oriented.** Skills represent what developers ask ("start work on X") rather than raw API calls ("call jira_transition_issue").
+- **Task-oriented, not API-oriented.** Skills represent what developers ask ("start work on X") rather than raw tool names.
 - **Safety by default.** All write operations require user confirmation.
 - **Dynamic discovery.** Transitions are discovered at runtime, not hardcoded — works with any Jira workflow.
 - **Jira and Git remain separate capabilities.** Starting work and creating a branch are composable but independent operations.
@@ -161,14 +167,24 @@ This skill connects branch, commit, or PR context back to the Jira issue using a
 
 ## Configuration Reference
 
-### Optional
+This plugin does not take Jira credentials or project-filter environment
+variables. Agent Plugins `mcp.json` only declares the remote server:
 
-| Variable               | Description                                       | Default      |
-| ---------------------- | ------------------------------------------------- | ------------ |
-| `JIRA_PROJECTS_FILTER` | Comma-separated project keys to restrict searches | All projects |
+```json
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
+    "atlassian-rovo-mcp": {
+      "type": "streamable-http",
+      "url": "https://mcp.atlassian.com/v2/mcp"
+    }
+  }
+}
+```
 
-`JIRA_PROJECTS_FILTER` is an optional search filter used by `jira-read`; it is
-not an authentication setting.
+To limit searches to a project, name the project in the prompt. Skills encode
+that as JQL (`project = KEY`). If several Atlassian Cloud sites are available,
+the agent asks which site to use after `getAccessibleAtlassianResources`.
 
 ## MCP Servers
 
@@ -179,7 +195,9 @@ This plugin uses the official Atlassian Rovo MCP v2 server:
 | `atlassian-rovo-mcp` | `streamable-http` | `https://mcp.atlassian.com/v2/mcp` | Atlassian Jira access |
 
 The server is hosted by Atlassian. The plugin does not launch a local MCP
-process; authentication is handled by the compatible MCP client.
+process. Authentication is handled by the compatible MCP client. Some Rovo MCP
+calls consume [Rovo credits](https://support.atlassian.com/atlassian-rovo-mcp-server/docs/getting-started-with-the-atlassian-remote-mcp-server/)
+on the Atlassian site.
 
 ## Safety Conventions
 
@@ -194,7 +212,7 @@ process; authentication is handled by the compatible MCP client.
 
 ### Transition safety
 
-The most critical safety rule: **always match transitions by destination status (`to.name`), never by transition name.**
+The most critical safety rule: **always match transitions by destination status, never by transition label.**
 
 Jira transition names are arbitrary workflow labels — the agent discovers transitions dynamically and matches your intent against where the transition actually goes.
 
@@ -203,14 +221,20 @@ Jira transition names are arbitrary workflow labels — the agent discovers tran
 ### "Jira authentication failed"
 
 Reconnect or re-authorize the Atlassian Rovo MCP v2 connection in your
-compatible MCP/Agent Plugin client. If the problem persists, verify that the
+compatible MCP/Agent Plugin client. Confirm the client completed OAuth for the
+correct Atlassian Cloud site. If the problem persists, verify that the
 authorized Jira account has access to the relevant projects and operations.
+
+### "Missing cloudId" / tools fail after login
+
+The first Jira call must be `getAccessibleAtlassianResources`. Later tools need
+that site's `cloudId`. If multiple sites are listed, choose one explicitly.
 
 ### "Issue not found"
 
 - Check the issue key is correct (e.g., `PROJ-123`, not `proj-123`)
 - Verify you have access to the project in Jira
-- Check if `JIRA_PROJECTS_FILTER` is restricting your search
+- Confirm the selected Atlassian Cloud site is the one that contains the issue
 
 ### "No transition available"
 
@@ -220,11 +244,12 @@ authorized Jira account has access to the relevant projects and operations.
 
 ## Version Notes
 
-The repository is currently on version 1.1.1 as defined in [plugin.json](plugin.json). The current documentation reflects the v1.1 architecture, including:
+The repository is currently on version **2.0.0** as defined in [plugin.json](plugin.json). This release uses the nine-skill Jira ↔ Git workflow with official Rovo MCP v2:
 
 - Jira-aware branch creation
 - Git-to-Jira linking work
 - Sprint visibility and blocker reporting
+- Client-managed OAuth against Atlassian Cloud
 
 Release notes for each version are documented in [CHANGELOG.md](./CHANGELOG.md).
 
@@ -250,10 +275,10 @@ We welcome contributions! For guidelines on development setup, testing, and subm
 
 Key points:
 
-- Connect and authorize the official Atlassian Rovo MCP v2 server through your client
-- Test in your Agent Plugin client
+- Connect and authorize the official Atlassian Rovo MCP v2 server through your client (Atlassian Cloud)
 - Test in your Agent Plugin client
 - Follow the skill design principles (single responsibility, no overlap, safety first)
+- Keep `plugin.json` / `mcp.json` within the closed Agent Plugins 1.0.0 schemas
 - Update documentation and CHANGELOG.md for release-relevant changes
 
 ## Standards

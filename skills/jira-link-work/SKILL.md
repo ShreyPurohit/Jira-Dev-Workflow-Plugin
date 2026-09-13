@@ -1,6 +1,7 @@
 ---
 name: jira-link-work
 description: Link git branches, commits, or pull requests to a Jira issue by posting a comment built FROM git data (traceability between code and ticket). Use only when the content comes from git — for free-text prose comments use jira-comment.
+compatibility: Requires Atlassian Cloud Jira through Atlassian Rovo MCP v2 (https://mcp.atlassian.com/v2/mcp) with client-managed OAuth, plus a local Git repository.
 ---
 
 # Jira Link Work
@@ -24,6 +25,12 @@ tickets. The defining trait of this skill: the comment content is derived from g
   (this skill only posts comments derived from git artifacts).
 - **Completing the ticket** (comment + transition to done) → use `jira-complete`.
 - **Creating the branch itself** → use `jira-branch`.
+
+## Atlassian MCP conventions
+
+1. Call `getAccessibleAtlassianResources` first and obtain the `cloudId` for the user's Jira Cloud site. If more than one site is returned, ask which to use; do not guess.
+2. Pass that `cloudId` on every subsequent Jira tool call.
+3. Call `addOrEditJiraIssueComment` to **add** a new comment. Omit any existing comment ID unless the user explicitly asked to edit a specific comment.
 
 ## How to respond
 
@@ -134,11 +141,12 @@ file summaries only when they are relevant and available.
 ### Step 4: Confirm and post
 
 Show the comment preview to the user and ask for confirmation before posting via
-`addOrEditJiraIssueComment`.
+`addOrEditJiraIssueComment` with `cloudId` and no comment ID (add, do not edit).
 
 ## Rules
 
 - **Always confirm before posting** — show the exact comment that will be posted.
+- **Add, do not silently edit.** Omit comment ID unless the user asked to edit a specific comment.
 - **Never guess commit data** — only use what git returns.
 - **Infer issue key from branch** when not explicitly provided (pattern: `feat/<KEY>-slug`).
 - **Keep comments concise** — max 10 commits listed; if more, summarize with "... and N more commits".

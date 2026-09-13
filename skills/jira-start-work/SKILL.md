@@ -1,6 +1,7 @@
 ---
 name: jira-start-work
 description: Begin work on a Jira issue by transitioning it to In Progress. Use only for starting work; for any other status change use jira-update-status, and use jira-branch separately to create a Git branch.
+compatibility: Requires Atlassian Cloud Jira through Atlassian Rovo MCP v2 (https://mcp.atlassian.com/v2/mcp) with client-managed OAuth.
 ---
 
 # Jira Start Work
@@ -22,11 +23,17 @@ Progress) — a narrowed case of the general `jira-update-status`.
 - **Creating the Git branch** → use `jira-branch` separately.
 - **Final completion** → use `jira-complete`.
 
+## Atlassian MCP conventions
+
+1. Call `getAccessibleAtlassianResources` first and obtain the `cloudId` for the user's Jira Cloud site. If more than one site is returned, ask which to use; do not guess.
+2. Pass that `cloudId` on every subsequent Jira tool call.
+3. Follow the `jira-update-status` transition procedure for writes.
+
 ## How to respond
 
 ### Step 1: Verify the ticket
 
-1. Call `getJiraIssue` to read the current state.
+1. Call `getJiraIssue` with `cloudId` to read the current state.
 2. Verify:
    - The ticket exists
    - The ticket is in a state that can be transitioned to "In Progress" (typically "To Do" or equivalent)
@@ -40,8 +47,9 @@ verification procedure defined by `jira-update-status`. That procedure uses
 transitions, and `transitionJiraIssue` to perform the confirmed write.
 
 - The target is the workflow's **In Progress equivalent**.
-- Match the destination using `transition.to.name`, never the transition label
-  in `transition.name`.
+- Match the destination using the destination status field from the tool
+  response (commonly `to.name` or an equivalent destination status name), never
+  the transition label in `name`.
 - Always confirm before changing Jira state.
 - Verify the resulting status afterward.
 
