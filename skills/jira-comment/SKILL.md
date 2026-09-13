@@ -1,6 +1,7 @@
 ---
 name: jira-comment
 description: Post a free-text progress, note, or completion comment on a Jira issue. Use for prose updates the user dictates or asks you to compose — NOT for linking git branches/commits/PRs (use jira-link-work) and NOT for status changes (use jira-update-status).
+license: MIT
 compatibility: Requires Atlassian Cloud Jira through Atlassian Rovo MCP v2 (https://mcp.atlassian.com/v2/mcp) with client-managed OAuth.
 ---
 

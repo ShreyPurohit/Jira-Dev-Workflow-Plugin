@@ -109,9 +109,10 @@ This open-source repository:
 
 ## Contact
 
-For privacy concerns or questions about how this Plugin handles data, please open an issue on GitHub:
+For privacy concerns or questions about how this Plugin handles data, contact:
 
-https://github.com/ShreyPurohit/Jira-Dev-Workflow-Plugin/issues
+- GitHub Issues: https://github.com/ShreyPurohit/Jira-Dev-Workflow-Plugin/issues
+- Email: purohitshrey9@gmail.com
 
 ## Changes to This Policy
 

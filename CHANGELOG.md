@@ -6,18 +6,13 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
-- Bumped the plugin version to `2.0.0` (breaking connectivity change).
-- Renamed the Agent Plugins manifest `name` from `jira-dev-workflow` to `jira-dev-workflow-plugin` to match the GitHub repository.
-- Migrated from the third-party `mcp-atlassian` stdio server to the official Atlassian Rovo MCP v2 Streamable HTTP endpoint (`https://mcp.atlassian.com/v2/mcp`).
-- Authentication is client-managed (OAuth 2.1 recommended). Agent Plugins `mcp.json` does not carry credentials or Authorization headers.
-- Jira skills now require `getAccessibleAtlassianResources` / `cloudId` before other Jira tool calls.
-- Comment skills add via `addOrEditJiraIssueComment` without a comment ID unless the user asked to edit.
-- Removed the obsolete `JIRA_PROJECTS_FILTER` environment variable. Project scope comes from the user's request encoded as JQL.
-- Documented Atlassian Cloud-only support and leftover third-party MCP references.
+- Migrated from the third-party `mcp-atlassian` stdio server to official Atlassian Rovo MCP v2 over Streamable HTTP (`https://mcp.atlassian.com/v2/mcp`), with client-managed OAuth.
+- Renamed the plugin to `jira-dev-workflow-plugin` and set the package version to `2.0.0`.
+- Updated skills and documentation for Rovo MCP v2 tools, `cloudId`, and Agent Plugins registry metadata.
 
 ### Breaking
 
-- Self-hosted / Data Center Jira that used `mcp-atlassian` with an API token in plugin env is no longer supported. Use Atlassian Cloud and authorize through the MCP client.
+- Atlassian Cloud only. Self-hosted / Data Center Jira and API tokens in plugin environment variables are no longer supported.
 
 ## [1.1.1] - 2026-09-06
 

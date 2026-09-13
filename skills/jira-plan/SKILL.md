@@ -1,6 +1,7 @@
 ---
 name: jira-plan
 description: Analyze Jira issue requirements and create structured implementation plans. Use when the user asks to plan, break down, or analyze what to build for a ticket.
+license: MIT
 compatibility: Requires Atlassian Cloud Jira through Atlassian Rovo MCP v2 (https://mcp.atlassian.com/v2/mcp) with client-managed OAuth.
 ---
 

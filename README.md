@@ -2,6 +2,8 @@
 
 A task-oriented Jira development workflow plugin that sits between an AI coding agent and the Jira/Git tools it needs for day-to-day delivery work. It packages a structured workflow for reading issues, planning implementation, starting work, creating branches, linking development artifacts back to Jira, and checking sprint progress — without requiring raw API calls from the user.
 
+This plugin is **workflow guidance** on top of the official Atlassian Rovo MCP v2 server. It does not replace Atlassian's MCP product; it teaches a coding agent a safe Jira Cloud delivery loop (read, plan, start work, branch, link, sprint, complete).
+
 Built on the open [Agent Plugins 1.0.0](https://agent-plugins.org/specification) specification — works with any compatible client.
 
 **Breaking in 2.0.0:** Jira access uses Atlassian's hosted Rovo MCP v2 (`https://mcp.atlassian.com/v2/mcp`) with **client-managed OAuth**. This plugin supports **Atlassian Cloud only**. Self-hosted Jira and API tokens in plugin environment variables are no longer part of the package.
@@ -88,6 +90,8 @@ jira-dev-workflow-plugin/
 ├── mcp.json                    # MCP server configuration
 ├── README.md                   # This file
 ├── LICENSE                     # MIT license
+├── PRIVACY.md                  # Privacy policy
+├── assets/logo.svg             # Plugin logo
 ├── .gitignore
 ├── skills/
 │   ├── jira-read/SKILL.md          # Read/search/summarize issues
@@ -255,13 +259,15 @@ Release notes for each version are documented in [CHANGELOG.md](./CHANGELOG.md).
 
 ## Support
 
-For issues, questions, or feature requests, please open an issue on GitHub:
+- **Issues:** [GitHub Issues](https://github.com/ShreyPurohit/Jira-Dev-Workflow-Plugin/issues)
+- **Email:** [purohitshrey9@gmail.com](mailto:purohitshrey9@gmail.com)
+- **Author:** [Shrey Purohit](https://github.com/ShreyPurohit)
 
-[GitHub Issues](https://github.com/ShreyPurohit/Jira-Dev-Workflow-Plugin/issues)
+For bugs, questions, or feature requests, open a GitHub issue or email the address above. Do not include Jira API tokens, credentials, or private ticket data in public issues.
 
 ## Privacy
 
-This plugin is open-source and does not operate a hosted backend. For details on how it handles information, see [PRIVACY.md](./PRIVACY.md).
+This plugin is open-source and does not operate a hosted backend. Privacy policy: [PRIVACY.md](./PRIVACY.md).
 
 ## Security
 

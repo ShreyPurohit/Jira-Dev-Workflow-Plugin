@@ -1,6 +1,7 @@
 ---
 name: jira-update-status
 description: Transition a Jira issue to an arbitrary status via dynamic discovery. Use for general status changes EXCEPT the two specialized cases — starting work (To Do → In Progress, use jira-start-work) and final completion (comment + done, use jira-complete).
+license: MIT
 compatibility: Requires Atlassian Cloud Jira through Atlassian Rovo MCP v2 (https://mcp.atlassian.com/v2/mcp) with client-managed OAuth.
 ---
 

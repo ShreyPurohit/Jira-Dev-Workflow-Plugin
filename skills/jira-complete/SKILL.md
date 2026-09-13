@@ -1,6 +1,7 @@
 ---
 name: jira-complete
 description: Wrap up a finished Jira issue — post a confirmed completion comment AND transition it to the final Done status in one flow. Use only for final completion; for a bare status change use jira-update-status.
+license: MIT
 compatibility: Requires Atlassian Cloud Jira through Atlassian Rovo MCP v2 (https://mcp.atlassian.com/v2/mcp) with client-managed OAuth.
 ---
 

@@ -1,6 +1,7 @@
 ---
 name: jira-sprint
 description: Show current sprint status, your assigned tickets, and blockers at a glance. Use for sprint workload, board status, blockers, or standup prep — not for generic issue search.
+license: MIT
 compatibility: Requires Atlassian Cloud Jira through Atlassian Rovo MCP v2 (https://mcp.atlassian.com/v2/mcp) with client-managed OAuth.
 ---
 

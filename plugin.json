@@ -5,6 +5,7 @@
   "description": "Task-oriented Jira development workflow plugin using official Atlassian Rovo MCP v2. Skills cover reading tickets, planning, status transitions, Jira-aware Git branches, sprints, and linking development work through natural-language prompts.",
   "author": {
     "name": "Shrey Purohit",
+    "email": "purohitshrey9@gmail.com",
     "url": "https://github.com/ShreyPurohit"
   },
   "homepage": "https://github.com/ShreyPurohit/Jira-Dev-Workflow-Plugin#readme",
@@ -12,16 +13,21 @@
   "license": "MIT",
   "keywords": [
     "jira",
+    "atlassian",
+    "rovo",
     "workflow",
     "development",
     "tickets",
+    "issue",
     "agile",
-    "project-management",
-    "mcp",
-    "atlassian",
+    "scrum",
     "sprint",
+    "standup",
+    "board",
+    "jql",
     "branch",
     "git",
-    "standup"
+    "mcp",
+    "project-management"
   ]
 }

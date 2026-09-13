@@ -1,6 +1,7 @@
 ---
 name: jira-start-work
 description: Begin work on a Jira issue by transitioning it to In Progress. Use only for starting work; for any other status change use jira-update-status, and use jira-branch separately to create a Git branch.
+license: MIT
 compatibility: Requires Atlassian Cloud Jira through Atlassian Rovo MCP v2 (https://mcp.atlassian.com/v2/mcp) with client-managed OAuth.
 ---
 

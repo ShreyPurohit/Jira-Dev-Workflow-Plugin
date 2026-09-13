@@ -78,9 +78,10 @@ security guidance and keep the client authorization current.
 
 ## Questions or concerns?
 
-If you have security questions or concerns about the Plugin (that are not vulnerability reports), please open a discussion on GitHub:
+If you have security questions or concerns about the Plugin (that are not vulnerability reports), please open a discussion on GitHub or email:
 
-https://github.com/ShreyPurohit/Jira-Dev-Workflow-Plugin/issues
+https://github.com/ShreyPurohit/Jira-Dev-Workflow-Plugin/issues  
+purohitshrey9@gmail.com
 
 For vulnerability reports, please use the private security advisory process described above.
 

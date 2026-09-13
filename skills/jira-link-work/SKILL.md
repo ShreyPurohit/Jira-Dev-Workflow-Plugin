@@ -1,6 +1,7 @@
 ---
 name: jira-link-work
 description: Link git branches, commits, or pull requests to a Jira issue by posting a comment built FROM git data (traceability between code and ticket). Use only when the content comes from git — for free-text prose comments use jira-comment.
+license: MIT
 compatibility: Requires Atlassian Cloud Jira through Atlassian Rovo MCP v2 (https://mcp.atlassian.com/v2/mcp) with client-managed OAuth, plus a local Git repository.
 ---
 

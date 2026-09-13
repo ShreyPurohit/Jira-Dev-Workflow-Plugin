@@ -1,6 +1,7 @@
 ---
 name: jira-read
 description: Read, summarize, and search Jira issues through natural language. Use when looking up a ticket, extracting acceptance criteria, or listing issues with JQL.
+license: MIT
 compatibility: Requires Atlassian Cloud Jira through Atlassian Rovo MCP v2 (https://mcp.atlassian.com/v2/mcp) with client-managed OAuth.
 ---
 

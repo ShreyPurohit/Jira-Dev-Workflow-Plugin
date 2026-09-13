@@ -65,7 +65,7 @@ Try natural-language prompts in your Agent Plugin client to verify the Plugin wo
 
 ### Key files
 
-- **`plugin.json`:** Closed Agent Plugins 1.0.0 manifest (`$schema` + `name` required). Do not add unknown top-level fields; client-specific data belongs under `extensions`.
+- **`plugin.json`:** Closed Agent Plugins 1.0.0 manifest (`$schema` + `name` required). Include `version`, `description`, `author` (`name` required; `email` and `url` recommended for registries), `keywords`, `homepage`, `repository`, and SPDX `license`. Do not add unknown top-level fields; client-specific data belongs under `extensions`.
 - **`mcp.json`:** Closed Agent Plugins MCP document. This plugin uses `type: "streamable-http"` and `url` only. `$schema` version must match `plugin.json`.
 - **`skills/*/SKILL.md`:** Agent Skills format. Frontmatter `name` must match the directory name. Optional `compatibility` may note Rovo MCP v2.
 
@@ -79,6 +79,7 @@ Each skill file must follow this structure:
 ---
 name: skill-name
 description: Brief description of what the skill does and when to use it
+license: MIT
 compatibility: Requires Atlassian Cloud Jira through Atlassian Rovo MCP v2
 ---
 

@@ -1,6 +1,7 @@
 ---
 name: jira-branch
 description: Create a Git branch from a Jira issue key with smart naming and repository safety checks. Use when the user asks to create or set up a branch for a ticket.
+license: MIT
 compatibility: Requires Atlassian Cloud Jira through Atlassian Rovo MCP v2 (https://mcp.atlassian.com/v2/mcp) with client-managed OAuth, plus a local Git repository.
 ---
 
