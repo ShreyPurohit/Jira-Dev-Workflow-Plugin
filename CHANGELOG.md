@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Changed
+
+- Migrated from the third-party `mcp-atlassian` stdio server to official Atlassian Rovo MCP v2 over Streamable HTTP (`https://mcp.atlassian.com/v2/mcp`), with client-managed OAuth.
+- Renamed the plugin to `jira-dev-workflow-plugin` and set the package version to `2.0.0`.
+- Updated skills and documentation for Rovo MCP v2 tools, `cloudId`, and Agent Plugins registry metadata.
+
+### Breaking
+
+- Atlassian Cloud only. Self-hosted / Data Center Jira and API tokens in plugin environment variables are no longer supported.
+
 ## [1.1.1] - 2026-09-06
 
 ### Added

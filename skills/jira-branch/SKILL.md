@@ -1,6 +1,8 @@
 ---
 name: jira-branch
-description: Create a Git branch from a Jira issue key with smart naming and repository safety checks
+description: Create a Git branch from a Jira issue key with smart naming and repository safety checks. Use when the user asks to create or set up a branch for a ticket.
+license: MIT
+compatibility: Requires Atlassian Cloud Jira through Atlassian Rovo MCP v2 (https://mcp.atlassian.com/v2/mcp) with client-managed OAuth, plus a local Git repository.
 ---
 
 # Jira Branch
@@ -15,11 +17,17 @@ Create a git feature branch from a Jira issue, with a smart slug derived from th
 - User says "set up a branch for this ticket"
 - User mentions an issue key in the context of starting code work
 
+## Atlassian MCP conventions
+
+1. Call `getAccessibleAtlassianResources` first and obtain the `cloudId` for the user's Jira Cloud site. If more than one site is returned, ask which to use; do not guess.
+2. Pass that `cloudId` on every subsequent Jira tool call.
+3. Call `getJiraIssue` only to read summary and status for branch naming. Do not transition the issue.
+
 ## How to respond
 
 ### Step 1: Fetch the issue
 
-1. Call `jira_get_issue` with the issue key to get the summary and status.
+1. Call `getJiraIssue` with the issue key and `cloudId` to get the summary and status.
 2. If the issue doesn't exist, report the error and stop.
 
 ### Step 2: Generate branch name
@@ -31,6 +39,7 @@ feat/<ISSUE-KEY>-<slug>
 ```
 
 Rules for the slug:
+
 - Derive from the issue summary
 - Lowercase only
 - Replace spaces and special characters with hyphens
@@ -39,6 +48,7 @@ Rules for the slug:
 - Remove trailing hyphens
 
 **Examples:**
+
 - `PROJ-123` "Add email verification to user settings" → `feat/PROJ-123-add-email-verification-to-user-settings`
 - `PROJ-42` "Fix login page CSS on mobile devices" → `feat/PROJ-42-fix-login-page-css-on-mobile-devices`
 - `BUG-101` "[Critical] API timeout on /users endpoint under load" → `feat/BUG-101-api-timeout-on-users-endpoint-under-load`
@@ -46,6 +56,7 @@ Rules for the slug:
 ### Step 3: Check repository state
 
 Before creating the branch:
+
 1. Inspect the current Git repository state.
 2. Check whether the branch already exists locally.
 3. Warn the user about uncommitted or conflicting work before creating or switching branches.
@@ -68,6 +79,7 @@ If the user wants a different name, use their preference.
 ### Step 5: Create the branch
 
 After confirmation, execute:
+
 1. `git checkout -b <branch-name>`
 2. Verify the branch was created successfully by checking the active branch name.
 

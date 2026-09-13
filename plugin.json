@@ -1,10 +1,11 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
-  "name": "jira-dev-workflow",
-  "version": "1.1.1",
-  "description": "AI-powered Jira development workflow plugin. Provides task-oriented skills for reading tickets, planning implementations, managing Jira status transitions, creating Jira-aware Git branches, tracking sprints, and linking development work to Jira through natural-language prompts.",
+  "name": "jira-dev-workflow-plugin",
+  "version": "2.0.0",
+  "description": "Task-oriented Jira development workflow plugin using official Atlassian Rovo MCP v2. Skills cover reading tickets, planning, status transitions, Jira-aware Git branches, sprints, and linking development work through natural-language prompts.",
   "author": {
     "name": "Shrey Purohit",
+    "email": "purohitshrey9@gmail.com",
     "url": "https://github.com/ShreyPurohit"
   },
   "homepage": "https://github.com/ShreyPurohit/Jira-Dev-Workflow-Plugin#readme",
@@ -12,16 +13,21 @@
   "license": "MIT",
   "keywords": [
     "jira",
+    "atlassian",
+    "rovo",
     "workflow",
     "development",
     "tickets",
+    "issue",
     "agile",
-    "project-management",
-    "mcp",
-    "atlassian",
+    "scrum",
     "sprint",
+    "standup",
+    "board",
+    "jql",
     "branch",
     "git",
-    "standup"
+    "mcp",
+    "project-management"
   ]
 }

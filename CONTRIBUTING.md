@@ -11,31 +11,18 @@ git clone https://github.com/ShreyPurohit/Jira-Dev-Workflow-Plugin.git
 cd Jira-Dev-Workflow-Plugin
 ```
 
-### 2. Install dependencies
+### 2. Authenticate through your client
 
-The Plugin uses the Model Context Protocol (MCP) via `uvx` for dynamic MCP server execution.
+The plugin uses the official Atlassian Rovo MCP v2 server at
+`https://mcp.atlassian.com/v2/mcp` over Streamable HTTP. That endpoint is
+Atlassian Cloud only. When manually testing Jira functionality, connect and
+authorize through your compatible Agent Plugin/MCP client (OAuth 2.1).
 
-Ensure you have `uv` installed:
+Do not put Jira credentials, API tokens, or `Authorization` headers in this
+repository or in `mcp.json`. Agent Plugins 1.0.0 has no portable credential
+fields; authentication is client-managed.
 
-```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
-```
-
-This provides the `uvx` command used by `mcp.json`.
-
-### 3. Configure your Jira environment
-
-Set up your local Jira credentials as environment variables:
-
-```bash
-export JIRA_URL="https://yourinstance.atlassian.net"
-export JIRA_USERNAME="your-email@company.com"
-export JIRA_API_TOKEN="your-api-token"
-```
-
-See the README for instructions on obtaining a Jira API token.
-
-### 4. Import the plugin into a compatible Agent Plugin client
+### 3. Import the plugin into a compatible Agent Plugin client
 
 - **Kiro:** Powers panel → Add Custom Power → Import from GitHub → paste the repository URL
 - **VS Code:** Follow the [Agent Plugins setup guide](https://code.visualstudio.com/docs/agent-customization/agent-plugins)
@@ -43,7 +30,7 @@ See the README for instructions on obtaining a Jira API token.
 
 Point the client to this repository or your local clone.
 
-### 5. Test manually
+### 4. Test manually
 
 Try natural-language prompts in your Agent Plugin client to verify the Plugin works:
 
@@ -78,9 +65,9 @@ Try natural-language prompts in your Agent Plugin client to verify the Plugin wo
 
 ### Key files
 
-- **`plugin.json`:** Defines the plugin identity, version, and metadata according to the [Agent Plugins 1.0.0 specification](https://agent-plugins.org/specification).
-- **`mcp.json`:** Configures the `mcp-atlassian` MCP server for standard Jira API access.
-- **`skills/*/SKILL.md`:** Each skill is a Markdown file with YAML frontmatter defining its name and description, followed by natural-language instructions for the AI agent.
+- **`plugin.json`:** Closed Agent Plugins 1.0.0 manifest (`$schema` + `name` required). Include `version`, `description`, `author` (`name` required; `email` and `url` recommended for registries), `keywords`, `homepage`, `repository`, and SPDX `license`. Do not add unknown top-level fields; client-specific data belongs under `extensions`.
+- **`mcp.json`:** Closed Agent Plugins MCP document. This plugin uses `type: "streamable-http"` and `url` only. `$schema` version must match `plugin.json`.
+- **`skills/*/SKILL.md`:** Agent Skills format. Frontmatter `name` must match the directory name. Optional `compatibility` may note Rovo MCP v2.
 
 ## Adding or Modifying a Skill
 
@@ -91,7 +78,9 @@ Each skill file must follow this structure:
 ```markdown
 ---
 name: skill-name
-description: Brief description of what the skill does
+description: Brief description of what the skill does and when to use it
+license: MIT
+compatibility: Requires Atlassian Cloud Jira through Atlassian Rovo MCP v2
 ---
 
 # Skill Title
@@ -161,8 +150,9 @@ Before submitting changes, test the following:
 
 ### Transition discovery
 
-- [ ] Does the skill discover transitions dynamically from Jira?
-- [ ] Does it match transitions by destination status (`to.name`), not by transition label?
+- [ ] Does the skill resolve `cloudId` via `getAccessibleAtlassianResources` before other Jira calls?
+- [ ] Does the skill discover transitions dynamically from Jira (`discover` + `executeRead` / `listJiraIssueTransitions`)?
+- [ ] Does it match transitions by destination status, not by transition label?
 - [ ] Does it handle workflows with missing expected transitions?
 
 ### Branch creation (if applicable)
@@ -178,10 +168,11 @@ Before submitting changes, test the following:
 
 ### Error handling
 
-- [ ] What happens if the Jira instance is unreachable?
-- [ ] What happens if credentials are invalid?
+- [ ] What happens if the Jira Cloud site is unreachable?
+- [ ] What happens if the MCP client is not authorized?
 - [ ] What happens if an issue doesn't exist?
 - [ ] What happens if a workflow transition is unavailable?
+- [ ] What happens if multiple Atlassian sites are returned?
 
 ### Cross-client testing
 

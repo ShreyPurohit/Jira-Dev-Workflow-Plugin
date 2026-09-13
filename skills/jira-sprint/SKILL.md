@@ -1,6 +1,8 @@
 ---
 name: jira-sprint
-description: Show current sprint status, your assigned tickets, and blockers at a glance
+description: Show current sprint status, your assigned tickets, and blockers at a glance. Use for sprint workload, board status, blockers, or standup prep — not for generic issue search.
+license: MIT
+compatibility: Requires Atlassian Cloud Jira through Atlassian Rovo MCP v2 (https://mcp.atlassian.com/v2/mcp) with client-managed OAuth.
 ---
 
 # Jira Sprint
@@ -26,13 +28,20 @@ tickets, sprint workload, progress, blockers, and standup preparation.
 General Jira issue searching or listing without sprint context belongs to
 `jira-read`.
 
+## Atlassian MCP conventions
+
+1. Call `getAccessibleAtlassianResources` first and obtain the `cloudId` for the user's Jira Cloud site. If more than one site is returned, ask which to use; do not guess.
+2. Pass that `cloudId` on every subsequent Jira tool call.
+3. Prefer `searchJiraIssuesUsingJql` with `sprint in openSprints()`. If that JQL is unsupported, use `discover` then `executeRead` for `getJiraBoardSprintData` or `listJiraBoardSprints` after the user confirms the board or project.
+4. If the user named a project, include `project = KEY` in JQL. Do not invent a project key.
+
 ## How to respond
 
 ### My tickets (default)
 
 When the user asks about their own work in the current sprint:
 
-1. Call `jira_search` with JQL: `assignee = currentUser() AND sprint in openSprints() ORDER BY status ASC, priority DESC`
+1. Call `searchJiraIssuesUsingJql` with `cloudId` and JQL: `assignee = currentUser() AND sprint in openSprints() ORDER BY status ASC, priority DESC`
 2. Present grouped by status:
 
 ```
@@ -55,7 +64,7 @@ When the user asks about their own work in the current sprint:
 
 When the user asks about the full sprint or team:
 
-1. Call `jira_search` with JQL: `sprint in openSprints() AND project = <PROJECT> ORDER BY status ASC, assignee ASC`
+1. Call `searchJiraIssuesUsingJql` with `cloudId` and JQL: `sprint in openSprints() AND project = <PROJECT> ORDER BY status ASC, assignee ASC`
 2. Present a summary:
 
 ```
@@ -77,16 +86,16 @@ When the user asks about the full sprint or team:
 
 When the user asks "what is blocking this sprint?":
 
-1. Search for flagged issues: `sprint in openSprints() AND project = <PROJECT> AND (labels = blocked OR labels = impediment OR flagged = impediment)`
-2. Also check for issues with no status change in 3+ days: `sprint in openSprints() AND status = "In Progress" AND updated <= -3d`
+1. Call `searchJiraIssuesUsingJql` for flagged issues: `sprint in openSprints() AND project = <PROJECT> AND (labels = blocked OR labels = impediment OR flagged = impediment)`
+2. Also call `searchJiraIssuesUsingJql` for issues with no status change in 3+ days: `sprint in openSprints() AND status = "In Progress" AND updated <= -3d`
 3. Present as blockers list.
 
 ### Standup prep
 
 When the user says "sprint standup" or "sprint standup prep":
 
-1. Fetch the user's sprint issues updated in the last 24 hours: `assignee = currentUser() AND sprint in openSprints() AND updated >= -1d ORDER BY updated DESC`
-2. Fetch the user's current in-progress sprint issues: `assignee = currentUser() AND sprint in openSprints() AND status = "In Progress"`
+1. Call `searchJiraIssuesUsingJql` for the user's sprint issues updated in the last 24 hours: `assignee = currentUser() AND sprint in openSprints() AND updated >= -1d ORDER BY updated DESC`
+2. Call `searchJiraIssuesUsingJql` for the user's current in-progress sprint issues: `assignee = currentUser() AND sprint in openSprints() AND status = "In Progress"`
 3. Format as standup:
 
 ```
@@ -106,11 +115,11 @@ When the user says "sprint standup" or "sprint standup prep":
 
 ## Rules
 
-- **Infer the project key** from context (current branch, recent queries, or ask the user once).
+- **Infer the project key** from context (current branch, recent queries, or ask the user once). Never invent it.
 - **Use `currentUser()`** for personal queries — never guess the username.
 - **Group by status** — always show the most actionable items first (In Progress > To Do > Done).
 - **Show priority** only for High and above — don't clutter with Medium/Low markers on everything.
-- **Require sprint scope for standup reporting** — use `sprint in openSprints()` when supported. If it is unsupported, use known sprint context; otherwise state that the active sprint could not be determined and ask for the sprint or project context. Never silently report unrelated personal work.
+- **Require sprint scope for standup reporting** — use `sprint in openSprints()` when supported. If it is unsupported, use `getJiraBoardSprintData` / `listJiraBoardSprints` after confirming the board, or ask for sprint/project context. Never silently report unrelated personal work.
 - **Never fabricate issue data** — only report what Jira returns.
 
 ## Error handling
