@@ -120,7 +120,8 @@ ticket.
 
 - **No invented AC coverage.** Only tick an AC the **patch** actually supports;
   flag the rest explicitly. `--stat` alone is not enough evidence.
-- **Confirm the base branch** before gathering commits/diff; ask if ambiguous.
+- **Identify the base branch** before gathering commits/diff. Use repository
+  context or the user's request when unambiguous; ask the user when it isn't.
 - **Do not invent test results.** Report tests as run and passed only when there
   is actual evidence (e.g. command output the user provided, or CI results you
   can see). A commit message or the presence of test files is **not** proof.
