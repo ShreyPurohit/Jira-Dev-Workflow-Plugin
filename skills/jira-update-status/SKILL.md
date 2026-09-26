@@ -1,6 +1,6 @@
 ---
 name: jira-update-status
-description: Transition a Jira issue to an arbitrary status via dynamic discovery. Use for general status changes EXCEPT the two specialized cases — starting work (To Do → In Progress, use jira-start-work) and final completion (comment + done, use jira-complete).
+description: Transition a Jira issue to an arbitrary status via dynamic discovery. Use for general status changes EXCEPT specialized flows — starting work (jira-start-work), final completion (jira-complete), and review prep with a PR description (jira-review-prep).
 license: MIT
 compatibility: Requires Atlassian Cloud Jira through Atlassian Rovo MCP v2 (https://mcp.atlassian.com/v2/mcp) with client-managed OAuth.
 ---
@@ -9,7 +9,7 @@ compatibility: Requires Atlassian Cloud Jira through Atlassian Rovo MCP v2 (http
 
 Transition a Jira issue between statuses safely using dynamic transition discovery.
 This is the **general-purpose** transition skill for any status change that is not
-one of the two specialized flows.
+one of the specialized flows.
 
 ## When to use
 
@@ -24,6 +24,8 @@ one of the two specialized flows.
 - **Moving To Do → In Progress to begin work** → use `jira-start-work`.
 - **Final completion** (adds a completion comment + transitions to done/sign-off)
   → use `jira-complete`.
+- **Prepare for review with a PR/MR description** → use `jira-review-prep`
+  (this skill is fine for a bare move to a review status with no description).
 - **Only posting a comment, no status change** → use `jira-comment`.
 
 ## Atlassian MCP conventions

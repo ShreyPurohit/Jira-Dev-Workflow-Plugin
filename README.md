@@ -81,6 +81,9 @@ If you get issue details back, the plugin is working.
 | "Comment on PROJ-123"                            | Adds a structured progress or completion comment                     |
 | "Complete PROJ-123"                              | Verifies current state and transitions the issue through completion  |
 | "Show me open tasks in PROJ"                     | Searches with appropriate JQL                                        |
+| "Log 2h on PROJ-123"                             | Records a worklog (time-tracking) entry against the issue            |
+| "Prepare PROJ-123 for review"                    | Generates a PR/MR description from ACs + git diff, offers transition |
+| "Download the images from PROJ-123"              | Fetches issue/comment attachments via the authenticated MCP server   |
 
 ## Plugin Structure
 
@@ -102,7 +105,10 @@ jira-dev-workflow-plugin/
 │   ├── jira-complete/SKILL.md      # Complete development workflows
 │   ├── jira-branch/SKILL.md        # Create a Jira-aware Git branch
 │   ├── jira-link-work/SKILL.md     # Link Git work back to Jira
-│   └── jira-sprint/SKILL.md        # Show sprint status and blockers
+│   ├── jira-sprint/SKILL.md        # Show sprint status and blockers
+│   ├── jira-worklog/SKILL.md       # Log time (worklog) against an issue
+│   ├── jira-review-prep/SKILL.md   # Generate a PR description + review transition
+│   └── jira-attachments/SKILL.md   # Download issue/comment attachments
 ```
 
 ### How it works
@@ -118,6 +124,7 @@ jira-dev-workflow-plugin/
 - **Safety by default.** All write operations require user confirmation.
 - **Dynamic discovery.** Transitions are discovered at runtime, not hardcoded — works with any Jira workflow.
 - **Jira and Git remain separate capabilities.** Starting work and creating a branch are composable but independent operations.
+- **Composition over duplication.** Some skills are task-oriented shortcuts over shared primitives (`jira-start-work` / `jira-complete` / `jira-review-prep` over `jira-update-status`; `jira-plan` consumes `jira-attachments`) — not competing implementations of the same mechanic.
 - **No invented data.** The agent only reports what Jira or Git returns; it never guesses.
 - **Portable.** Built on open standards (Agent Plugins + Agent Skills + MCP) — not locked to any single IDE.
 
@@ -134,6 +141,9 @@ jira-dev-workflow-plugin/
 | `jira-branch`        | Create a Jira-aware Git branch from the issue summary          |
 | `jira-link-work`     | Link Git work artifacts back to Jira                           |
 | `jira-sprint`        | Show sprint progress, assignee workload, and blockers          |
+| `jira-worklog`       | Log time spent (worklog entries) against a Jira issue          |
+| `jira-review-prep`   | Generate a PR/MR description from ACs + git diff, then review   |
+| `jira-attachments`   | Download issue/comment attachments via the authenticated MCP   |
 
 ## Jira ↔ Git Workflow
 
@@ -248,11 +258,14 @@ that site's `cloudId`. If multiple sites are listed, choose one explicitly.
 
 ## Version Notes
 
-The repository is currently on version **2.0.0** as defined in [plugin.json](plugin.json). This release uses the nine-skill Jira ↔ Git workflow with official Rovo MCP v2:
+The repository is currently on version **2.1.0** as defined in [plugin.json](plugin.json). This release adds three skills to the Jira ↔ Git workflow on top of official Rovo MCP v2 (twelve skills total):
 
 - Jira-aware branch creation
 - Git-to-Jira linking work
 - Sprint visibility and blocker reporting
+- Worklog / time-tracking entries (`jira-worklog`)
+- Review preparation — PR/MR description from ACs + git diff (`jira-review-prep`)
+- Authenticated attachment downloads (`jira-attachments`), also consumed by `jira-plan`
 - Client-managed OAuth against Atlassian Cloud
 
 Release notes for each version are documented in [CHANGELOG.md](./CHANGELOG.md).

@@ -15,7 +15,7 @@ Create a git feature branch from a Jira issue, with a smart slug derived from th
 - User says "start a branch for PROJ-456"
 - User says "branch PROJ-789"
 - User says "set up a branch for this ticket"
-- User mentions an issue key in the context of starting code work
+- User asks to create a Git branch for a ticket (branch creation only — not a Jira status change)
 
 ## Atlassian MCP conventions
 

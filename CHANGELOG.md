@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-09-25
+
+### Added
+
+- `jira-worklog` skill — log time against a Jira issue via natural language (backed by Rovo v2 `addOrEditJiraIssueWorklog`).
+- `jira-review-prep` skill — generate a PR/MR description from acceptance criteria and the local git diff, then optionally transition to the review status.
+- `jira-attachments` skill — download files attached to a Jira issue or comment through the authenticated MCP path (`downloadJiraIssueAttachment`), instead of an unauthenticated web fetch.
+- Activation keywords: `worklog`, `time-tracking`, `review`, `pull-request`, `attachments`, `images`, `download`.
+
+### Changed
+
+- `jira-plan` now reads attached mockups/screenshots/spec docs (via the `jira-attachments` capability) before producing a plan, and refuses to finalize a plan while flagged attachments could not be read — producing a labeled provisional outline instead of inferred requirements.
+
 ## [2.0.0] - 2026-09-13
 
 ### Changed

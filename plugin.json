@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "jira-dev-workflow-plugin",
-  "version": "2.0.0",
-  "description": "Task-oriented Jira development workflow plugin using official Atlassian Rovo MCP v2. Skills cover reading tickets, planning, status transitions, Jira-aware Git branches, sprints, and linking development work through natural-language prompts.",
+  "version": "2.1.0",
+  "description": "Task-oriented Jira development workflow plugin using official Atlassian Rovo MCP v2. Skills cover reading tickets, planning (including attached mockups/specs), status transitions, worklog/time-tracking, review prep, attachment downloads, Jira-aware Git branches, sprints, and linking development work through natural-language prompts.",
   "author": {
     "name": "Shrey Purohit",
     "email": "purohitshrey9@gmail.com",
@@ -28,6 +28,13 @@
     "branch",
     "git",
     "mcp",
-    "project-management"
+    "project-management",
+    "worklog",
+    "time-tracking",
+    "review",
+    "pull-request",
+    "attachments",
+    "images",
+    "download"
   ]
 }
