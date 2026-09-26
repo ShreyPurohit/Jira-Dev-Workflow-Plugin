@@ -31,7 +31,9 @@ creation, and it does not create branches or link Git work to Jira.
 
 - **Just changing the status, no completion comment** → use `jira-update-status`
   (this skill always pairs a comment with the transition).
-- **Ready for review or ready for sign-off, but not final completion** → use
+- **Prepare for review / draft a PR description** (not final Done) → use
+  `jira-review-prep`.
+- **Bare move to a review or sign-off status, no PR description** → use
   `jira-update-status`.
 - **Posting a comment without transitioning** → use `jira-comment`.
 - **Creating or linking Git work** → use `jira-branch` or `jira-link-work`.

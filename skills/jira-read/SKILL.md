@@ -66,6 +66,7 @@ Common JQL patterns:
 - **Scope searches from the user's request.** There is no plugin environment variable for project filtering. When the user names projects, encode them in JQL; otherwise search within the authorized site.
 - **Comments are read-only here.** If the user wants to add a comment, defer to the jira-comment skill.
 - **Transitions are read-only here.** If the user asks to change status, defer to the jira-update-status skill.
+- **Attachment downloads are out of scope here.** If the user asks to show, open, or download files attached to the issue or a comment, defer to the jira-attachments skill (or jira-plan when the intent is planning that needs those files).
 - **Sprint reporting is out of scope here.** If the user asks about current sprint progress, workload, blockers, or standup preparation, defer to the jira-sprint skill.
 
 ## Error handling
