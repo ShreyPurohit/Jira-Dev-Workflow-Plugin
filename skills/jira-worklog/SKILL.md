@@ -29,7 +29,7 @@ Jira UI. This skill owns worklog (time-tracking) entries.
 
 1. Call `getAccessibleAtlassianResources` first and obtain the `cloudId` for the user's Jira Cloud site. If more than one site is returned, ask which to use; do not guess.
 2. Pass that `cloudId` on every subsequent Jira tool call.
-3. Add a worklog via `addOrEditJiraIssueWorklog`, reached at runtime through the v2 deferred-tool path (`discover` → `executeWrite`) like other write tools.
+3. Create a worklog via `addOrEditJiraIssueWorklog`, reached at runtime through the v2 deferred-tool path (`discover` → `executeWrite`) like other write tools. Default to **add / create a new entry**. Never edit an existing worklog unless the user explicitly asks to edit one; if the tool schema makes add vs edit ambiguous, resolve the create path before writing.
 
 ## How to respond
 
@@ -46,7 +46,7 @@ Convert to Jira's format using `w`/`d`/`h`/`m` units (`2h`, `30m`, `1d`,
 
 - "an hour and a half" → `1h 30m`
 - "90 minutes" → `1h 30m`
-- "half a day" → `4h` (Jira default working day) — echo this assumption
+- "half a day" → `4h` — **assumption only** (not a universal Jira setting); echo it so the user can correct (e.g. their day may be 8h)
 
 ### Step 3: Confirm before writing
 
@@ -60,10 +60,12 @@ Comment:  (none)
 Log this worklog?
 ```
 
-### Step 4: Log it
+### Step 4: Log it (create, don't edit)
 
-On confirmation, call `addOrEditJiraIssueWorklog` with the issue key, normalised
-duration, and `cloudId` (plus optional comment / `started` timestamp).
+On confirmation, call `addOrEditJiraIssueWorklog` to **create a new worklog** with
+the issue key, normalised duration, and `cloudId` (plus optional comment /
+`started` timestamp). Do not pass an existing worklog id or otherwise edit a prior
+entry unless the user explicitly asked to change a specific worklog.
 
 ### Step 5: Verify and report
 
@@ -76,12 +78,17 @@ Report the entry, and the running total if the response returns it:
 ## Important rules
 
 - **Always confirm before logging** — it is a write.
+- **Create by default; never edit accidentally.** A request to "log" / "track" /
+  "record" time always creates a **new** worklog. Edit an existing entry only when
+  the user explicitly asks (e.g. "edit that worklog to 2h"). If add vs edit is
+  ambiguous in the tool schema, resolve the create path before writing.
 - **Never invent a duration.** If the user's time is ambiguous ("some time", "a
   while"), ask for a concrete value instead of guessing.
 - **Default the date to today** unless the user gives one; always echo the date
   you used so a wrong assumption is visible.
-- **Echo unit assumptions** (e.g. treating "a day" as `1d` = 8h / working day) so
-  the user can correct them.
+- **Echo unit assumptions** (e.g. "half a day" → `4h`, or "a day" → `1d` as an
+  8h working-day convention) so the user can correct them — these are assumptions,
+  not fixed Jira rules.
 - **Never include secrets, tokens, or sensitive paths** in a worklog comment.
 
 ## Error handling
@@ -99,6 +106,6 @@ User: "Log an hour and a half on PROJ-123 for the login fix"
 Response:
 
 1. Parse → key `PROJ-123`, duration `1h 30m`, comment "login fix", date today
-2. Confirm the parsed values with the user
-3. On confirmation, call `addOrEditJiraIssueWorklog` with `cloudId`
+2. Confirm the parsed values with the user (create new worklog — not an edit)
+3. On confirmation, call `addOrEditJiraIssueWorklog` to create the entry with `cloudId`
 4. Report: "✅ Logged 1h 30m on PROJ-123 (login fix)."

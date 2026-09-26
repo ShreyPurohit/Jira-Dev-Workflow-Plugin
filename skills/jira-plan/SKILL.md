@@ -62,16 +62,25 @@ over `jira-update-status`).
 
 ### Step 2: Read attachments (if any)
 
-1. From the `getJiraIssue` response, **detect attachments** on the issue and its
-   comments. If there are none, skip to Step 3 and plan as normal.
-2. If attachments exist, **retrieve and read them via the `jira-attachments`
-   capability** (`downloadJiraIssueAttachment` → signed URL → save → read). Read
-   images for visual requirements and documents for written spec.
-3. **Gate the plan on attachment reads.** If a flagged attachment could NOT be
-   read (download blocked, unsupported type, signed-URL failure), do NOT present a
-   finalized plan. Say which attachment is unread, produce at most a clearly
-   labeled *provisional* outline, and ask the user to paste/describe the missing
-   content. Never fill the gap with inferred requirements.
+1. From the `getJiraIssue` response (and `listJiraIssueComments` via
+   `discover` → `executeRead` when comment attachments may not be included),
+   **detect attachments** on the issue and its comments. If there are none, skip
+   to Step 3 and plan as normal.
+2. **Select what to read for planning** — do not blindly download everything, and
+   do not stop at a picker when planning needs the files:
+   - Read attachments that look **relevant to requirements** (mockups, screenshots
+     of the bug/UI, specs, design docs referenced by the ticket or ACs).
+   - Skip obvious noise when relevance is clear (e.g. unrelated screenshots).
+   - **Ask the user** when relevance or necessity is unclear, rather than guessing
+     or stalling indefinitely.
+3. Retrieve and read the selected files via the `jira-attachments` capability
+   (`downloadJiraIssueAttachment` → signed URL → save → read). Read images for
+   visual requirements and documents for written spec.
+4. **Gate the plan on required attachment reads.** If a **required** attachment
+   could NOT be read (download blocked, unsupported type, signed-URL failure), do
+   NOT present a finalized plan. Say which attachment is unread, produce at most a
+   clearly labeled *provisional* outline, and ask the user to paste/describe the
+   missing content. Never fill the gap with inferred requirements.
 
 ### Step 3: Analyze requirements
 
@@ -138,8 +147,8 @@ Present the plan to the user and ask if they'd like to:
 
 - **Test scenarios come BEFORE development.** Define what you'll test before writing code. Use IDs like TS-001, TS-010, TS-020 for traceability.
 - **Do NOT guess requirements.** If the ticket description is vague or lacks detail, flag the ambiguities. Do not fill in business logic from assumptions.
-- **Never finalize a plan on unread flagged attachments.** When the ticket has attachments the user relies on, read them via the `jira-attachments` capability first; if one cannot be read, produce a clearly labeled provisional outline and ask the user to paste/describe it — never infer the missing spec.
-- **Consume the attachment capability, do not reimplement it.** The download mechanics live in `jira-attachments`; `jira-plan` only invokes them.
+- **Never finalize a plan on unread required attachments.** Identify and read requirement-relevant attachments via `jira-attachments`; ask when relevance is unclear; if a required one cannot be read, produce a clearly labeled provisional outline and ask the user to paste/describe it — never infer the missing spec.
+- **Consume the attachment capability, do not reimplement it.** The download mechanics live in `jira-attachments`; `jira-plan` only invokes them (including comment-attachment discovery when needed).
 - **Acceptance criteria are the contract.** Everything in the plan must trace back to either an explicit AC or a reasonable technical necessity.
 - **Plans are living documents.** If the user says the plan is wrong, update it — don't defend incorrect assumptions.
 - **Do not transition the ticket** during planning. Status changes happen only when the user explicitly asks to start work.
@@ -155,7 +164,7 @@ User: "Create an implementation plan for PROJ-123"
 
 Response:
 
-1. Fetch PROJ-123 details (summary, description, ACs, comments)
-2. If attachments exist, read them via `jira-attachments`; if a flagged one cannot be read, stop at a labeled provisional outline and ask the user to paste/describe it
+1. Fetch PROJ-123 details (summary, description, ACs, comments; use `listJiraIssueComments` when comment attachments may be missing from `getJiraIssue`)
+2. Select requirement-relevant attachments (ask if unclear); read them via `jira-attachments`; if a required one cannot be read, stop at a labeled provisional outline and ask the user to paste/describe it
 3. Extract acceptance criteria and produce a structured plan with test scenarios (TS-001 etc.), subtasks, and any ambiguities — incorporating attachment content when present
 4. Present for user approval (only finalize when required attachments were readable)

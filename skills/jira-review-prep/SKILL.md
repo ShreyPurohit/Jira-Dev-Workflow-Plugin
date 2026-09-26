@@ -52,16 +52,24 @@ description, and acceptance criteria.
 
 ### Step 2: Gather local git context (read-only)
 
-- current branch: `git branch --show-current`
-- commits since base: `git log --oneline <base>..HEAD`
-- changed-files summary: `git diff --stat <base>..HEAD`
+1. Determine the **base branch** from repository context (e.g. remote default /
+   upstream tracking) or the user's request. If it cannot be identified
+   unambiguously, **ask the user** which base to use — never assume `main` or
+   `development`.
+2. Collect:
+   - current branch: `git branch --show-current`
+   - commits since base: `git log --oneline <confirmed-base>..HEAD`
+   - changed-files summary: `git diff --stat <confirmed-base>...HEAD`
+   - **actual patch**: `git diff <confirmed-base>...HEAD`
+3. Inspect the **patch** (and relevant files where needed) to decide AC coverage.
+   Do **not** infer implementation from filenames or `--stat` line counts alone.
 
 Infer the issue key from the branch name (`feat/<KEY>-slug`) if the user did not
 supply it. This step reads git only — it never commits, pushes, or opens a PR.
 
 ### Step 3: Generate the PR/MR description
 
-Map the diff back to the ticket's ACs:
+Map the **patch** back to the ticket's ACs:
 
 ```markdown
 ## <ISSUE-KEY>: <summary>
@@ -78,12 +86,12 @@ Map the diff back to the ticket's ACs:
 
 ### Testing
 
-- <how it was verified — from commits/tests present>
+- <only claim run/passed when there is real evidence; otherwise "Not verified" / note for the developer>
 
 Closes <ISSUE-KEY>
 ```
 
-Mark an AC unchecked (and say so) when the diff does not clearly cover it. Never
+Mark an AC unchecked (and say so) when the patch does not clearly cover it. Never
 claim an AC is met without evidence in the changes.
 
 ### Step 4: Present the description
@@ -110,8 +118,13 @@ ticket.
 
 ## Important rules
 
-- **No invented AC coverage.** Only tick an AC the diff actually supports; flag
-  the rest explicitly.
+- **No invented AC coverage.** Only tick an AC the **patch** actually supports;
+  flag the rest explicitly. `--stat` alone is not enough evidence.
+- **Confirm the base branch** before gathering commits/diff; ask if ambiguous.
+- **Do not invent test results.** Report tests as run and passed only when there
+  is actual evidence (e.g. command output the user provided, or CI results you
+  can see). A commit message or the presence of test files is **not** proof.
+  Otherwise write `Not verified` or leave a testing note for the developer.
 - **Read-only git.** This skill inspects git; it does not commit, push, or open PRs.
 - **Confirm the transition separately** from generating the description — a user
   may want the description without moving the ticket.
@@ -122,7 +135,8 @@ ticket.
 
 - **Not a git repository** → generate the description from the ticket alone and
   note that git context was unavailable.
-- **No ACs in the ticket** → build the description from summary + diff and say the
+- **Ambiguous base branch** → ask which base to use before inspecting the patch.
+- **No ACs in the ticket** → build the description from summary + patch and say the
   ticket had no explicit ACs to check against.
 - **Issue not found / branch matches no key** → ask the user for the key.
 - **No available transition to the review status** → present the description
@@ -135,7 +149,7 @@ User: "Prepare PROJ-123 for review"
 Response:
 
 1. Fetch PROJ-123 → summary, description, ACs
-2. Read branch, commits, and `git diff --stat` since base
-3. Generate a PR description mapping the diff to each AC (marking uncovered ACs)
+2. Confirm base branch (ask if ambiguous); read commits, `--stat`, and the full `git diff <base>...HEAD` patch
+3. Generate a PR description mapping the patch to each AC (marking uncovered ACs); Testing = evidence only or "Not verified"
 4. Present it to copy; then offer to transition PROJ-123 to its review status
 5. On confirmation, apply the `jira-update-status` transition procedure for the review destination, verify, and offer `jira-link-work`

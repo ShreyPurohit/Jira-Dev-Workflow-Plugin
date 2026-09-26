@@ -44,20 +44,27 @@ Retrieve files attached to a Jira issue or its comments through the
 
 1. Call `getAccessibleAtlassianResources` first and obtain the `cloudId` for the user's Jira Cloud site. If more than one site is returned, ask which to use; do not guess.
 2. Pass that `cloudId` on every subsequent Jira tool call.
-3. Enumerate attachments via `getJiraIssue`, then obtain a signed download URL via `downloadJiraIssueAttachment`, reached at runtime through the v2 deferred-tool path (`discover` → `executeRead`). This is a read-only capability (`read_jira`), so no confirmation gate is required.
+3. Enumerate issue attachments via `getJiraIssue`. If comment attachments may not be included in that response, call `listJiraIssueComments` via `discover` → `executeRead` and scan those comments too.
+4. Obtain a signed download URL via `downloadJiraIssueAttachment` (`discover` → `executeRead`). This is a read-only capability (`read_jira`), so no confirmation gate is required.
 
 ## How to respond
 
 ### Step 1: Enumerate attachments
 
-Resolve `cloudId`, then call `getJiraIssue` to list the issue's attachments and
-any attachments referenced in its comments. Capture each attachment's id and
-filename.
+Resolve `cloudId`, then call `getJiraIssue` for issue-level attachments. If you
+need attachments from comments and they are not present in that response, call
+`listJiraIssueComments` (`discover` → `executeRead`) and collect attachment ids /
+filenames from the comments. Capture each attachment's id and filename.
 
-### Step 2: List what's available
+### Step 2: Choose what to download
 
-When there is more than one attachment, list them (filename, type, size) so the
-user can pick, rather than blindly pulling everything.
+- **Standalone "show/download" intent:** when there is more than one attachment,
+  list them (filename, type, size) so the user can pick — do not blindly pull
+  everything.
+- **Consumed by `jira-plan`:** read requirement-relevant attachments (mockups,
+  screenshots, specs); ask the user when relevance is unclear; keep the plan
+  provisional if a required file cannot be read. Planning must not stall forever
+  on a picker when the files are needed for the plan.
 
 ### Step 3: Obtain a signed URL
 
@@ -110,7 +117,7 @@ User: "Download the mockup attached to PROJ-123 so you can see it"
 
 Response:
 
-1. Resolve `cloudId`, call `getJiraIssue` → find the mockup attachment id + filename
+1. Resolve `cloudId`, call `getJiraIssue` (and `listJiraIssueComments` if needed) → find the mockup attachment id + filename
 2. Obtain a signed URL via `downloadJiraIssueAttachment` (discover → `executeRead`)
 3. Save it locally and report the path
 4. Hand the path to the client to render the image; if the download fails, say so and ask the user to paste it — never infer its contents
