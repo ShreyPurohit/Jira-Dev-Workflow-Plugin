@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [2.1.1] - 2026-09-28
+
+### Changed
+
+- `jira-plan` and `jira-attachments`: attachment enumeration is now an explicit, unskippable step — both require calling `getJiraIssue` with `fields: ["attachment"]` and state that the default/evidence response does NOT reliably include the `attachment` array (absence of media there is not evidence of no attachments). This closes a real field failure where a plan was finalized after wrongly concluding a ticket had no attachments.
+- `jira-plan`: added a pre-present attachment self-check (enumerated? relevant? read?) so the provisional-plan gate is confirmed explicitly rather than satisfied only in appearance.
+- `jira-plan`: image attachments on a UI/UX ticket are now presumptively requirement-relevant — do not dismiss one by filename alone.
+- `jira-attachments`: clarified preferring the returned `downloadCommand` (curl) in a shell-capable client over handing off the raw `downloadUrl`; sharpened the "download blocked" handling so a blocked byte-fetch is relayed as an environment/network constraint (with a path forward) rather than retried or fallen back to an unauthenticated fetch.
+
 ## [2.1.0] - 2026-09-25
 
 ### Added
