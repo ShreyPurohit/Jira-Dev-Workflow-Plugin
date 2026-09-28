@@ -258,7 +258,7 @@ that site's `cloudId`. If multiple sites are listed, choose one explicitly.
 
 ## Version Notes
 
-The repository is currently on version **2.1.1** as defined in [plugin.json](plugin.json). This release adds three skills to the Jira ↔ Git workflow on top of official Rovo MCP v2 (twelve skills total):
+The repository is currently on version **2.1.1** as defined in [plugin.json](plugin.json). Version 2.1.1 builds on the twelve-skill workflow introduced in v2.1.0, improving Jira attachment discovery, requirement-relevant file handling, and download failure guidance.
 
 - Jira-aware branch creation
 - Git-to-Jira linking work
