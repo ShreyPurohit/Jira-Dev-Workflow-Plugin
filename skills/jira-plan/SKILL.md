@@ -44,7 +44,7 @@ over `jira-update-status`).
 1. Call `getAccessibleAtlassianResources` first and obtain the `cloudId` for the user's Jira Cloud site. If more than one site is returned, ask which to use; do not guess.
 2. Pass that `cloudId` on every subsequent Jira tool call.
 3. Call `getJiraIssue` directly. If comments are needed and not included in that response, use `discover` then `executeRead` for `listJiraIssueComments`.
-4. If the issue or its comments carry attachments, read them through the `jira-attachments` capability (`downloadJiraIssueAttachment`, discovered via `discover` → `executeRead`) before finalizing the plan.
+4. To enumerate attachments you MUST call `getJiraIssue` with `fields: ["attachment"]` — the default/evidence response does not reliably include the `attachment` array. Then read requirement-relevant ones through the `jira-attachments` capability (`downloadJiraIssueAttachment`, discovered via `discover` → `executeRead`) before finalizing the plan.
 5. Never embed credentials in plugin files or Jira comments.
 
 ## How to respond
@@ -62,15 +62,24 @@ over `jira-update-status`).
 
 ### Step 2: Read attachments (if any)
 
-1. From the `getJiraIssue` response (and `listJiraIssueComments` via
-   `discover` → `executeRead` when comment attachments may not be included),
-   **detect attachments** on the issue and its comments. If there are none, skip
-   to Step 3 and plan as normal.
+1. **You MUST enumerate attachments as a discrete tool call — call `getJiraIssue`
+   with `fields: ["attachment"]` (and scan comments via `listJiraIssueComments`
+   through `discover` → `executeRead`).** The default / evidence `getJiraIssue`
+   view does NOT reliably return the `attachment` array, so an empty
+   description-media / `comment.total: 0` response does **NOT** mean there are no
+   attachments. Absence of media in the default view is not evidence of absence —
+   only the explicit `fields: ["attachment"]` call is. If that call returns an
+   empty attachment array on both the issue and its comments, skip to Step 3 and
+   plan as normal.
 2. **Select what to read for planning** — do not blindly download everything, and
    do not stop at a picker when planning needs the files:
    - Read attachments that look **relevant to requirements** (mockups, screenshots
      of the bug/UI, specs, design docs referenced by the ticket or ACs).
-   - Skip obvious noise when relevance is clear (e.g. unrelated screenshots).
+   - **Image attachments on a UI/UX ticket are presumptively requirement-relevant
+     — do not dismiss one by its filename alone.** A file named for a different
+     screen may still be the design context; when in doubt, read it or ask.
+   - Skip obvious noise only when relevance is genuinely clear (e.g. an avatar, a
+     logo, an unrelated export).
    - **Ask the user** when relevance or necessity is unclear, rather than guessing
      or stalling indefinitely.
 3. Retrieve and read the selected files via the `jira-attachments` capability
@@ -137,7 +146,16 @@ Structure the plan as:
 
 ### Step 5: Present for review
 
-Present the plan to the user and ask if they'd like to:
+**Before presenting, confirm this attachment self-check (state the result inline):**
+
+- Attachments enumerated via `getJiraIssue` `fields: ["attachment"]` **and**
+  comments scanned? (Y/N)
+- Any attachments found that are requirement-relevant? (Y/N)
+- If yes — were they all successfully downloaded and read? (Y/N)
+- **If any required attachment is unread, the plan is PROVISIONAL** — label it so
+  and ask the user to paste/describe the missing file. Do not present it as final.
+
+Then present the plan to the user and ask if they'd like to:
 
 - Approve it and proceed with development
 - Request changes
@@ -164,7 +182,7 @@ User: "Create an implementation plan for PROJ-123"
 
 Response:
 
-1. Fetch PROJ-123 details (summary, description, ACs, comments; use `listJiraIssueComments` when comment attachments may be missing from `getJiraIssue`)
+1. Fetch PROJ-123 details (summary, description, ACs, comments), then enumerate attachments via `getJiraIssue` with `fields: ["attachment"]` and scan comments (use `listJiraIssueComments` when comment attachments may be missing from `getJiraIssue`) — an empty default view does NOT mean there are no attachments
 2. Select requirement-relevant attachments (ask if unclear); read them via `jira-attachments`; if a required one cannot be read, stop at a labeled provisional outline and ask the user to paste/describe it
 3. Extract acceptance criteria and produce a structured plan with test scenarios (TS-001 etc.), subtasks, and any ambiguities — incorporating attachment content when present
 4. Present for user approval (only finalize when required attachments were readable)

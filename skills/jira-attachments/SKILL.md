@@ -44,17 +44,21 @@ Retrieve files attached to a Jira issue or its comments through the
 
 1. Call `getAccessibleAtlassianResources` first and obtain the `cloudId` for the user's Jira Cloud site. If more than one site is returned, ask which to use; do not guess.
 2. Pass that `cloudId` on every subsequent Jira tool call.
-3. Enumerate issue attachments via `getJiraIssue`. If comment attachments may not be included in that response, call `listJiraIssueComments` via `discover` → `executeRead` and scan those comments too.
+3. Enumerate issue attachments by calling `getJiraIssue` with `fields: ["attachment"]` — the default/evidence response does not reliably include the `attachment` array, so an empty default view does NOT mean there are no attachments. If comment attachments may not be included, call `listJiraIssueComments` via `discover` → `executeRead` and scan those comments too.
 4. Obtain a signed download URL via `downloadJiraIssueAttachment` (`discover` → `executeRead`). This is a read-only capability (`read_jira`), so no confirmation gate is required.
 
 ## How to respond
 
 ### Step 1: Enumerate attachments
 
-Resolve `cloudId`, then call `getJiraIssue` for issue-level attachments. If you
-need attachments from comments and they are not present in that response, call
-`listJiraIssueComments` (`discover` → `executeRead`) and collect attachment ids /
-filenames from the comments. Capture each attachment's id and filename.
+Resolve `cloudId`, then call `getJiraIssue` with `fields: ["attachment"]` for
+issue-level attachments. **The default / evidence `getJiraIssue` view does NOT
+reliably return the `attachment` array — an empty default response does not mean
+the ticket has no attachments, so the explicit `fields: ["attachment"]` call is
+mandatory.** If you need attachments from comments and they are not present in
+that response, call `listJiraIssueComments` (`discover` → `executeRead`) and
+collect attachment ids / filenames from the comments. Capture each attachment's
+id and filename.
 
 ### Step 2: Choose what to download
 
@@ -69,8 +73,13 @@ filenames from the comments. Capture each attachment's id and filename.
 ### Step 3: Obtain a signed URL
 
 Call `downloadJiraIssueAttachment` (discover → `executeRead`) for the chosen
-attachment id. It returns a short-lived **signed** download URL plus a save
-command — the authenticated path a raw `web_fetch` cannot replicate.
+attachment id. It returns a short-lived **signed** download URL plus a
+ready-to-run save command — the authenticated path a raw `web_fetch` cannot
+replicate. **In a shell-capable client, prefer running the returned
+`downloadCommand` (the `curl`) directly**; hand the raw `downloadUrl` to the
+client only when it fetches attachments itself and cannot run a shell command.
+The `downloadCommand` is a plain `curl … --output` to the Atlassian media host —
+inspect it before running and do not pipe it to a shell interpreter.
 
 ### Step 4: Save locally
 
@@ -106,8 +115,16 @@ Report what was retrieved and where it landed.
 - **Attachment not found / no attachments on the issue** → say so; do not invent one.
 - **Signed URL expired** → re-request via `downloadJiraIssueAttachment`; do not
   retry the dead URL.
-- **Download blocked (sandbox/allowlist)** → name the two Atlassian media hosts
-  that need allowlisting and stop, rather than falling back to `web_fetch`.
+- **Download blocked (sandbox/allowlist)** → the signature is the signed URL
+  generating fine but the byte fetch failing on the media host, e.g.
+  `curl: (56) Recv failure: Connection reset by peer` (HTTP 000) against
+  `api.media.atlassian.com`. This means the MCP part worked and the media host is
+  network-blocked, NOT a bad/expired URL. Name the two Atlassian media hosts that
+  need allowlisting (`api.media.atlassian.com`, `*.frontend.public.atl-paas.net`)
+  and stop retrying — do not fall back to `web_fetch` and do not re-request the
+  URL. **Then offer the user a path forward:** allowlist the two hosts and retry,
+  or paste/describe the attachment. If this was consumed by `jira-plan`, continue
+  only as a clearly-labeled PROVISIONAL plan until the file can be read.
 - **Client cannot render the file type** → report the saved local path so the user
   can open it, instead of claiming to have viewed it.
 
@@ -117,7 +134,7 @@ User: "Download the mockup attached to PROJ-123 so you can see it"
 
 Response:
 
-1. Resolve `cloudId`, call `getJiraIssue` (and `listJiraIssueComments` if needed) → find the mockup attachment id + filename
+1. Resolve `cloudId`, call `getJiraIssue` with `fields: ["attachment"]` (and `listJiraIssueComments` if needed) → find the mockup attachment id + filename
 2. Obtain a signed URL via `downloadJiraIssueAttachment` (discover → `executeRead`)
 3. Save it locally and report the path
 4. Hand the path to the client to render the image; if the download fails, say so and ask the user to paste it — never infer its contents
